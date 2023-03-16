@@ -31,6 +31,10 @@ export default {
         'filter-button': filterButton,
         'display-change-button': displayChangeButton,
     },
+    created() {
+        const email = process.env.ADMIN_EMAIL;
+        const password = process.env.PASSWORD;
+    },
     data() {
         return {
 

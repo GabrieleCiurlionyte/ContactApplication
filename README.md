@@ -38,4 +38,9 @@ npm i axios
 npm install -D sass-loader node-sass
 ```
 
+## Install dtenv package:
+```bash
+npm install dotenv --save-dev
+```
+
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
