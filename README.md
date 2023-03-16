@@ -16,7 +16,8 @@ npm run build
 
 ## To run pocketbase server
 ```bash
-./pocketbase server
+cd pocket_base
+./pocketbase serve
 ```
 
 ## Install vue router

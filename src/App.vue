@@ -30,14 +30,7 @@ export default {
 
 <style lang="scss">
 
-@import "~vue-material/dist/theme/engine"; // Import the theme engine
 
-@include md-register-theme("default", (
-  primary: #1F3F77, // The primary color of your brand
-  accent: #0054A6 // The secondary color of your brand
-));
-
-@import "~vue-material/dist/theme/all"; // Apply the theme
 
 #app {
   font-family: 'Roboto', sans-serif;
