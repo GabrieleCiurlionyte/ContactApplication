@@ -7,9 +7,9 @@
             <filter-button></filter-button>
             <display-change-button></display-change-button>
             <br>
-            <p>Iš viso rasta: <b> 152 kandidatų</b></p>
+            <p>Iš viso rasta: <b> {{ contactCount }}</b></p>
         </div>
-        <contact-page></contact-page>
+        <contact-page :contacts ="contacts"></contact-page>
         <pagination-buttons></pagination-buttons>
     </div>
 </template>
@@ -22,6 +22,8 @@ import paginationButtons from "../components/ContactPage/paginationButtons.vue"
 import searchBox from "../components/ContactPage/searchBox.vue"
 import filterButton from "../components/ContactPage/filterButton.vue"
 import displayChangeButton from '../components/ContactPage/displayChangeButton.vue'
+
+
 export default {
     name: 'app',
     components: {
@@ -31,14 +33,19 @@ export default {
         'filter-button': filterButton,
         'display-change-button': displayChangeButton,
     },
-    created() {
-        const email = process.env.ADMIN_EMAIL;
-        const password = process.env.PASSWORD;
-    },
     data() {
         return {
-
+            contacts: null,
+            contactCount : 0,
         }
+    },
+    async created() {
+        this.contacts = await this.$contactPlugin.getContacts(30,1);
+        this.contactCount = await this.$contactPlugin.getContactCount(); 
+    },
+    methods: {
+        
+
     }
 }
 </script>
@@ -47,6 +54,7 @@ export default {
 #UtilityBar {
     margin-left: 6.5%;
 }
+
 h1 {
     font-weight: 300;
     margin-top: 0.5%;

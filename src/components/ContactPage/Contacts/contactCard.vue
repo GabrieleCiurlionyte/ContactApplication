@@ -5,14 +5,14 @@
         <img src="../../../assets/icons/icons8-male-user-96_grey.png" alt="Avatar">
       </md-avatar>
 
-      <div class="md-title"><b>Vardas ir pavardė</b></div>
-      <div class="md-subhead">Pozicija: pozicija</div>
+      <div class="md-title"><b><slot name="name">Vardas ir pavardė</slot></b></div>
+      <div class="md-subhead"><slot name="position">pozicija</slot></div>
     </md-card-header>
 
     <md-card-content>
-      Telefono nr: +00000000000<br>
-      El. paštas: example@teltonika.lt<br>
-      Adresas: Saltoniškių g. 2
+      Telefono nr: <slot name="phone">+00000000000</slot><br>
+      El. paštas: <slot name="email">example@teltonika.lt</slot><br>
+      Adresas: <slot name="address">Saltoniškių g. 2</slot>
     </md-card-content>
 
     <md-card-actions>
@@ -38,7 +38,8 @@ export default {
 
 <style scoped>
 #card {
-  max-width: 20%;
+  max-width: 30%;
+  width : 20%;
   padding : 0.5%;
   margin: 2%;
   transition: transform 0.2s ease-in-out;

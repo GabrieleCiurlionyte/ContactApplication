@@ -5,18 +5,15 @@ import VueMaterial from 'vue-material'
 //TODO: remove and enter only the elements needed
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
+import axios from 'axios'
 
-@import "~vue-material/dist/theme/engine"; // Import the theme engine
+//Custom plugins:
+import contactPlugin from './plugins/contactPlugin'
 
-@include md-register-theme("default", (
-  primary: #3fffbe, // The primary color of your brand
-  accent: #1a11e8 // The secondary color of your brand
-));
-
-@import "~vue-material/dist/theme/all"; // Apply the theme
+Vue.prototype.$http = axios;
 
 Vue.use(VueMaterial);
-
+Vue.use(contactPlugin);
 
 new Vue({
   el: '#app',
