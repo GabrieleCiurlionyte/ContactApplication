@@ -4,6 +4,6 @@ import loginPage from "../views/LoginPage.vue"
 
 export default [
     {path:'/', component: contactPage},
-    {path:'/detailContactPage', component: detailedContactPage},
+    {path:'/detailedContactPage/:id', component: detailedContactPage},
     {path:'/loginPage', component: loginPage},
 ] 

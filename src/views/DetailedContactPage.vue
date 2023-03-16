@@ -5,7 +5,7 @@
         <md-card id="card">
             <md-card-header>
                 <img src="../assets/icons/icons8-male-user-96_grey.png" alt="Avatar">
-                <div class="md-display-1"><b>Vardas ir pavardė</b></div>
+                <div class="md-display-1" id="name"><b>Vardas ir pavardė</b></div>
                 <div class="md-headline">Pozicija: pozicija</div>
             </md-card-header>
 
@@ -44,13 +44,21 @@ export default {
     },
     data() {
         return {
-
+            id: this.$route.params.id,
+            contact: null,
         }
+    },
+    async created() {
+        this.contact = await this.$contactPlugin.getContact(this.id);
+        console.log(this.contact);
     }
 }
 </script>
   
 <style scoped>
+#name {
+    color: #2B2B2B;
+}
 #detailedContactPage {
     margin-left: 6.5%;
     margin-right: 6.5%;

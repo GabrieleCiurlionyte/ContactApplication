@@ -18,8 +18,15 @@ contactPlugin.getContacts = async function(perPage, pageNumber) {
 },
 
 
-contactPlugin.getContact = async function() {
-
+contactPlugin.getContact = async function(id) {
+  try {
+    const response = await this.http.get(
+        `contacts/records/${id}`
+    );
+    return response.data;
+} catch (error) {
+    console.log(error);
+}
 },
 
 contactPlugin.getContactCount = async function() {
