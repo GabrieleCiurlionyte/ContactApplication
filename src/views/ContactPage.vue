@@ -8,6 +8,7 @@
             <display-change-button></display-change-button>
             <br>
             <p>Iš viso rasta: <b> {{ contactCount }}</b></p>
+            <filter-bar></filter-bar>
         </div>
         <contact-page :contacts ="contacts"></contact-page>
         <pagination-buttons></pagination-buttons>
@@ -22,6 +23,8 @@ import paginationButtons from "../components/ContactPage/paginationButtons.vue"
 import searchBox from "../components/ContactPage/searchBox.vue"
 import filterButton from "../components/ContactPage/filterButton.vue"
 import displayChangeButton from '../components/ContactPage/displayChangeButton.vue'
+import filterBar from "../components/ContactPage/Filtering/FilteriBar.vue"
+
 
 
 export default {
@@ -32,6 +35,7 @@ export default {
         'search-box': searchBox,
         'filter-button': filterButton,
         'display-change-button': displayChangeButton,
+        'filter-bar': filterBar
     },
     data() {
         return {

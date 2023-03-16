@@ -10,12 +10,14 @@ import axios from 'axios'
 
 //Custom plugins:
 import contactPlugin from './plugins/contactPlugin'
+import filterPlugin from './plugins/filterPlugin';
 
 Vue.prototype.$http = axios;
 
 Vue.use(VueMaterial);
 Vue.use(MdIcon);
 Vue.use(contactPlugin);
+Vue.use(filterPlugin);
 
 new Vue({
   el: '#app',
