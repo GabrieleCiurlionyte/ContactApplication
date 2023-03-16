@@ -18,10 +18,6 @@ export default {
 </script>
   
 <style scoped>
-    #icon {
-        background-color: #EDEDED;
-    }
-
 
    
 </style>

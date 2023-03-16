@@ -3,14 +3,18 @@
 
         <div id="UtilityBar">
             <h1>Konktaktų sistema</h1>
-            <search-box id="search"></search-box>
-            <filter-button></filter-button>
-            <display-change-button></display-change-button>
+
+            <div id="FunctionalityBar">
+                <search-box id="search"></search-box>
+                <filter-button></filter-button>
+                <display-change-button></display-change-button>
+            </div>
+
             <br>
             <p>Iš viso rasta: <b> {{ contactCount }}</b></p>
             <filter-bar></filter-bar>
         </div>
-        <contact-page :contacts ="contacts"></contact-page>
+        <contact-page :contacts="contacts"></contact-page>
         <pagination-buttons></pagination-buttons>
     </div>
 </template>
@@ -40,21 +44,25 @@ export default {
     data() {
         return {
             contacts: null,
-            contactCount : 0,
+            contactCount: 0,
         }
     },
     async created() {
-        this.contacts = await this.$contactPlugin.getContacts(30,1);
-        this.contactCount = await this.$contactPlugin.getContactCount(); 
+        this.contacts = await this.$contactPlugin.getContacts(30, 1);
+        this.contactCount = await this.$contactPlugin.getContactCount();
     },
     methods: {
-        
+
 
     }
 }
 </script>
   
 <style scoped>
+#FunctionalityBar {
+    display: flex;
+    align-items: center;
+}
 #UtilityBar {
     margin-left: 6.5%;
 }
@@ -72,8 +80,6 @@ h1 {
 
 #search {
     max-width: 35%;
-    background-color: #EDEDED;
-    padding-bottom: 5px;
 }
 </style>
   
