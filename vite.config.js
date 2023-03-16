@@ -1,6 +1,7 @@
 
-import sass from 'sass'
+
 const { createVuePlugin } = require('vite-plugin-vue2');
+import sass from 'sass'
 
 module.exports = {
   plugins: [createVuePlugin(),

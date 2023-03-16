@@ -33,11 +33,11 @@ export default {
 @import "~vue-material/dist/theme/engine"; // Import the theme engine
 
 @include md-register-theme("default", (
-  primary: md-get-palette-color(blue, A200), // The primary color of your application
-  accent: md-get-palette-color(red, A200) // The accent or secondary color
+  primary: #1F3F77, // The primary color of your brand
+  accent: #0054A6 // The secondary color of your brand
 ));
 
-@import "~vue-material/dist/theme/all";
+@import "~vue-material/dist/theme/all"; // Apply the theme
 
 #app {
   font-family: 'Roboto', sans-serif;
