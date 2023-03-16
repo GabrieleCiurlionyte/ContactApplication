@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router/router'
 import VueMaterial from 'vue-material'
+import { MdIcon } from 'vue-material/dist/components';
 //TODO: remove and enter only the elements needed
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
@@ -13,6 +14,7 @@ import contactPlugin from './plugins/contactPlugin'
 Vue.prototype.$http = axios;
 
 Vue.use(VueMaterial);
+Vue.use(MdIcon);
 Vue.use(contactPlugin);
 
 new Vue({

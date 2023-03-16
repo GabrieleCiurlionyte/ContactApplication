@@ -3,7 +3,7 @@
 
         <div id="UtilityBar">
             <h1>Konktaktų sistema</h1>
-            <search-box></search-box>
+            <search-box id="search"></search-box>
             <filter-button></filter-button>
             <display-change-button></display-change-button>
             <br>
@@ -59,10 +59,17 @@ h1 {
     font-weight: 300;
     margin-top: 0.5%;
     padding-top: 15px;
+
 }
 
 #contactPage {
     margin-top: 7%;
+}
+
+#search {
+    max-width: 35%;
+    background-color: #EDEDED;
+    padding-bottom: 5px;
 }
 </style>
   

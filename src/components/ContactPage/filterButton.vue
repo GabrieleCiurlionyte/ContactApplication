@@ -17,5 +17,6 @@ export default {
 <style scoped>
    .md-icon-button {
     background-color: #0054A6;
+    display: inline;
    }
 </style>
