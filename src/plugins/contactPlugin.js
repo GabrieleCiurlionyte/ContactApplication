@@ -17,11 +17,21 @@ contactPlugin.getContacts = async function(perPage, pageNumber) {
     }
 },
 
+contactPlugin.getAllContacts = async function() {
+  try {
+      const response = await this.http.get(
+          `/collections/contacts/records`
+      );
+      return response.data.items;
+  } catch (error) {
+      console.log(error);
+  }
+},
 
 contactPlugin.getContact = async function(id) {
   try {
     const response = await this.http.get(
-        `contacts/records/${id}`
+        `/collections/contacts/records/${id}`
     );
     return response.data;
 } catch (error) {

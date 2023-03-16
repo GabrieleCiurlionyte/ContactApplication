@@ -2,7 +2,7 @@
   <div id="contactPage">
     <div class="card-wrapper">
 
-      <contact-card v-for="contact in contacts" :key="contact.id">      
+      <contact-card v-for="contact in contacts" :key="contact.id">
           <div slot="name">{{ contact.name + " " + contact.surname }}</div>
           <div slot="position">{{ contact.position }}</div>
           <div slot="phone"> {{ contact.phone_number }}</div>

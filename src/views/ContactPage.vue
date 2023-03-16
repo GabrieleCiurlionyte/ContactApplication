@@ -15,6 +15,7 @@
             <filter-bar></filter-bar>
         </div>
         <contact-page :contacts="contacts"></contact-page>
+        <contact-table></contact-table>
         <pagination-buttons></pagination-buttons>
     </div>
 </template>
@@ -28,8 +29,7 @@ import searchBox from "../components/ContactPage/searchBox.vue"
 import filterButton from "../components/ContactPage/filterButton.vue"
 import displayChangeButton from '../components/ContactPage/displayChangeButton.vue'
 import filterBar from "../components/ContactPage/Filtering/FilteriBar.vue"
-
-
+import contactTable from "../components/ContactPage/Contacts/table.vue"
 
 export default {
     name: 'app',
@@ -39,7 +39,8 @@ export default {
         'search-box': searchBox,
         'filter-button': filterButton,
         'display-change-button': displayChangeButton,
-        'filter-bar': filterBar
+        'filter-bar': filterBar,
+        'contact-table': contactTable,
     },
     data() {
         return {
