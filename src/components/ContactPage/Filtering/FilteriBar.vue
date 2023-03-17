@@ -45,7 +45,7 @@ export default {
     .filterField {
         max-width: 15%;
         display: inline;
-        margin-left: 50px;
+        margin-left: 20px;
         margin-right: 60px;
     }
 </style>

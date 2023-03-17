@@ -6,16 +6,21 @@
 
             <div id="FunctionalityBar">
                 <search-box id="search"></search-box>
-                <filter-button></filter-button>
-                <display-change-button></display-change-button>
+                <md-button class="md-icon-button" @click="isFilter = !isFilter">
+                    <img src="../assets/icons/icons8-funnel-96.png">
+                </md-button>
+
+                <md-button class="md-icon-button" @click="isTable = !isTable">
+                    <img src="../assets/icons/icons8-table-96.png">
+                </md-button>
             </div>
 
             <br>
             <p>Iš viso rasta: <b> {{ contactCount }}</b></p>
-            <filter-bar></filter-bar>
+            <filter-bar v-if="isFilter"></filter-bar>
         </div>
-        <contact-page :contacts="contacts"></contact-page>
-        <contact-table></contact-table>
+        <contact-page :contacts="contacts" v-if="!isTable"></contact-page>
+        <contact-table v-if="isTable"></contact-table>
         <pagination-buttons></pagination-buttons>
     </div>
 </template>
@@ -26,8 +31,6 @@
 import contactPage from "../components/ContactPage/Contacts/contactPage.vue"
 import paginationButtons from "../components/ContactPage/paginationButtons.vue"
 import searchBox from "../components/ContactPage/searchBox.vue"
-import filterButton from "../components/ContactPage/filterButton.vue"
-import displayChangeButton from '../components/ContactPage/displayChangeButton.vue'
 import filterBar from "../components/ContactPage/Filtering/FilteriBar.vue"
 import contactTable from "../components/ContactPage/Contacts/table.vue"
 
@@ -37,8 +40,6 @@ export default {
         'contact-page': contactPage,
         'pagination-buttons': paginationButtons,
         'search-box': searchBox,
-        'filter-button': filterButton,
-        'display-change-button': displayChangeButton,
         'filter-bar': filterBar,
         'contact-table': contactTable,
     },
@@ -46,6 +47,8 @@ export default {
         return {
             contacts: null,
             contactCount: 0,
+            isFilter: false,
+            isTable: false,
         }
     },
     async created() {
@@ -64,6 +67,7 @@ export default {
     display: flex;
     align-items: center;
 }
+
 #UtilityBar {
     margin-left: 6.5%;
 }
@@ -81,6 +85,11 @@ h1 {
 
 #search {
     max-width: 35%;
+}
+
+.md-icon-button {
+    background-color: #0054A6;
+    display: inline;
 }
 </style>
   

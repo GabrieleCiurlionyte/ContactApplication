@@ -1,6 +1,6 @@
 <template>
   <md-toolbar id="toolBar" class="md-accent" md-elevation="1">
-    <img src="../../assets/icons/Logo.png" class="md-title" style="flex: 1">
+    <img src="../../assets/icons/Logo.png" class="md-title" style="flex: 1" @click="goToPage()">
     <md-button class="md-primary">Kontaktai</md-button>
     <md-button class="md-primary">Įmonės</md-button>
     <md-button class="md-primary">Struktūros</md-button>
@@ -16,12 +16,18 @@
 </template>
 
 <script>
+import router from "../../router/router"
 export default {
   data() {
     return {
 
     }
   },
+  methods: {
+    goToPage() {
+      router.push('/');
+    }
+  }
 }
 </script>
 

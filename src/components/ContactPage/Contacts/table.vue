@@ -1,5 +1,5 @@
 <template>
-    <div id="table">
+    <div id="table" v-if="searched.length">
         <md-table v-model="searched" md-sort="name" md-sort-order="asc" md-card md-fixed-header @md-selected="onSelect">
             <md-table-toolbar>
                 <h1 class="md-title">Kontaktai</h1>
@@ -21,16 +21,12 @@
                 <md-table-cell md-label="El. paštas" md-sort-by="title">{{ item.email }}</md-table-cell>
                 <md-table-cell md-label="Adresas" md-sort-by="title">{{ item.office }}</md-table-cell>
             </md-table-row>
-
-
         </md-table>
-
-        <p>Selected:</p>
-    {{ selected }}
     </div>
 </template>
-    
+
 <script>
+
 import router from "../../../router/router"
 export default {
     components: {
@@ -38,7 +34,7 @@ export default {
     data() {
         return {
             contacts: "",
-            searched: null,
+            searched: [],
             searchQuery: "",
             selected: "",
         }
