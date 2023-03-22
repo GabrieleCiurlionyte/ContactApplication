@@ -1,0 +1,219 @@
+<template>
+  <div>
+    <md-dialog :md-active.sync="showModal">
+      <md-dialog-title>{{ WindowTitle }}</md-dialog-title>
+
+      <form novalidate class="md-layout" @submit.prevent="validateUser">
+        <md-card id="formCard" class="md-layout-item md-size-50 md-small-size-100">
+
+          <div id="main-container">
+            <div id="firstColumn">
+              <md-card-content>
+                <div class="md-layout md-gutter">
+                  <div class="md-layout-item md-small-size-100">
+                    <md-field :class="getValidationClass('firstName')">
+                      <label for="first-name">Vardas</label>
+                      <md-input name="first-name" id="first-name" autocomplete="given-name" v-model="form.firstName"
+                        :disabled="sending" />
+                      <span class="md-error" v-if="!v$.form.firstName.required">Vardas yra būtinas</span>
+                      <span class="md-error" v-else-if="!v$.form.firstName.minlength">Įvestas netinkamas vardas</span>
+                    </md-field>
+                  </div>
+
+                  <div class="md-layout-item md-small-size-100">
+                    <md-field :class="getValidationClass('lastName')">
+                      <label for="last-name">Pavarde</label>
+                      <md-input name="last-name" id="last-name" v-model="form.lastName"
+                        :disabled="sending" />
+                      <span class="md-error" v-if="!v$.form.lastName.required">Pavardė yra būtina</span>
+                      <span class="md-error" v-else-if="!v$.form.lastName.minlength">Įvesta netinkama pavardė</span>
+                    </md-field>
+                  </div>
+                </div>
+
+                <md-field :class="getValidationClass('position')">
+                  <label for="position">Pozicija</label>
+                  <md-input name="position" id="position" v-model="form.position"
+                    :disabled="sending" />
+                </md-field>
+
+                <span class="md-subheading">Kontaktinė informacija</span>
+
+                <md-field :class="getValidationClass('email')">
+                  <md-icon>email</md-icon>
+                  <label for="email">El. paštas</label>
+                  <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email"
+                    :disabled="sending" />
+                  <span class="md-error" v-if="!v$.form.email.required">Elektroninis paštas yra būtinas</span>
+                  <span class="md-error" v-else-if="!v$.form.email.email">Įvestas netinkamas elektroninis paštas</span>
+                </md-field>
+
+                <md-field :class="getValidationClass('phone_number')">
+                  <md-icon>phone</md-icon>
+                  <label for="phone_number">Telefono numeris</label>
+                  <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email"
+                    :disabled="sending" />
+                  <span class="md-error" v-if="!v$.form.email.required">Elektroninis paštas yra būtinas</span>
+                  <span class="md-error" v-else-if="!v$.form.email.email">Įvestas netinkamas elektroninis paštas</span>
+                </md-field>
+
+                <md-field :class="getValidationClass('email')">
+                  <label for="email">El. paštas</label>
+                  <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email"
+                    :disabled="sending" />
+                  <span class="md-error" v-if="!v$.form.email.required">Elektroninis paštas yra būtinas</span>
+                  <span class="md-error" v-else-if="!v$.form.email.email">Įvestas netinkamas elektroninis paštas</span>
+                </md-field>
+              </md-card-content>
+
+            </div>
+            <div id="secondColumn">
+
+            </div>
+          </div>
+
+
+          <md-progress-bar md-mode="indeterminate" v-if="sending" />
+
+          <md-card-actions>
+            <md-button type="submit" class="md-primary" :disabled="sending">Create user</md-button>
+          </md-card-actions>
+        </md-card>
+
+        <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
+      </form>
+
+      <md-dialog-actions>
+        <md-button class="md-primary" @click="showModal = false">Uždaryti</md-button>
+        <md-button class="md-primary" @click="showModal = false">{{ ActionTitle }}</md-button>
+      </md-dialog-actions>
+    </md-dialog>
+  </div>
+</template>
+  
+<script>
+import { useVuelidate } from '@vuelidate/core'
+import {
+  required,
+  email,
+  minLength,
+} from '@vuelidate/validators'
+
+
+
+export default {
+  name: 'DialogCustom',
+  props: ['showModal', 'EditMode'],
+  setup() {
+    return { v$: useVuelidate() }
+  },
+  data: () => ({
+    form: {
+      firstName: null,
+      lastName: null,
+      email: null,
+      phone_number: null,
+      position: null,
+      comapny: null,
+      office: null,
+      division: null,
+      department: null,
+      group: null,
+      photo: null,
+    },
+    userSaved: false,
+    sending: false,
+    lastUser: null
+  }),
+  validations: {
+    form: {
+      firstName: {
+        required,
+        minLength: minLength(3)
+      },
+      lastName: {
+        required,
+        minLength: minLength(3)
+      },
+      email: {
+        required,
+        email
+      },
+      phone_number: {
+
+      }
+    }
+  },
+  computed: {
+    WindowTitle: function () {
+      if (this.EditMode) {
+        return 'Redaguoti kontaktą';
+      }
+      else {
+        return 'Pridėti naują kontaktą';
+      }
+    },
+    ActionTitle: function () {
+      if (this.EditMode) {
+        return 'Redaguoti';
+      }
+      else {
+        return 'Pridėti';
+      }
+    },
+
+  },
+  methods: {
+    getValidationClass(fieldName) {
+      const field = this.form[fieldName]
+
+      if (field) {
+        return {
+          'md-invalid': field.$invalid && field.$dirty
+        }
+      }
+    },
+
+
+    clearForm() {
+      this.$v.$reset()
+      this.form.firstName = null
+      this.form.lastName = null
+      this.form.age = null
+      this.form.gender = null
+      this.form.email = null
+    },
+    saveUser() {
+      this.sending = true
+
+      // Instead of this timeout, here you can call your API
+      window.setTimeout(() => {
+        this.lastUser = `${this.form.firstName} ${this.form.lastName}`
+        this.userSaved = true
+        this.sending = false
+        this.clearForm()
+      }, 1500)
+    },
+    validateUser() {
+      this.$v.$touch()
+
+      if (!this.$v.$invalid) {
+        this.saveUser()
+      }
+    }
+  }
+}
+
+</script>
+  
+<style scoped>
+#formCard {
+  box-shadow: none;
+}
+
+#main-container {
+  display: flex;
+}
+</style>
+
+  

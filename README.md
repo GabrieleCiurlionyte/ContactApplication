@@ -43,4 +43,9 @@ npm install -D sass-loader node-sass
 npm install dotenv --save-dev
 ```
 
+## Install vuevalidate 
+```bash
+npm install @vuelidate/core @vuelidate/validators
+```
+
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).

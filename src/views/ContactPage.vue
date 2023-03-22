@@ -1,8 +1,10 @@
 <template>
     <div id="contactPage">
 
+        <modal-window :showModal="showModal" :EditMode="false"></modal-window>
+
         <div id="UtilityBar">
-            <h1>Konktaktų sistema</h1>
+            <h1>Konktaktų sist/ema</h1>
 
             <div id="FunctionalityBar">
                 <search-box id="search"></search-box>
@@ -19,7 +21,8 @@
             <p>Iš viso rasta: <b> {{ contactCount }}</b></p>
             <filter-bar v-if="isFilter"></filter-bar>
         </div>
-        <contact-page :contacts="contacts" v-if="!isTable"></contact-page>
+        <contact-page :contacts="contacts" v-if="!isTable"
+        @EditContact="EditContact($event)" @DeleteContact="DeleteContact($event)"></contact-page>
         <contact-table v-if="isTable"></contact-table>
         <pagination-buttons></pagination-buttons>
     </div>
@@ -33,6 +36,7 @@ import paginationButtons from "../components/ContactPage/paginationButtons.vue"
 import searchBox from "../components/ContactPage/searchBox.vue"
 import filterBar from "../components/ContactPage/Filtering/FilteriBar.vue"
 import contactTable from "../components/ContactPage/Contacts/table.vue"
+import modalWindow from "../components/ContactPage/Contacts/contactModalWindow.vue"
 
 export default {
     name: 'app',
@@ -42,6 +46,7 @@ export default {
         'search-box': searchBox,
         'filter-bar': filterBar,
         'contact-table': contactTable,
+        'modal-window' : modalWindow,
     },
     data() {
         return {
@@ -49,6 +54,7 @@ export default {
             contactCount: 0,
             isFilter: false,
             isTable: false,
+            showModal : true,
         }
     },
     async created() {
@@ -56,7 +62,12 @@ export default {
         this.contactCount = await this.$contactPlugin.getContactCount();
     },
     methods: {
-
+        EditContact(contact) {
+            this.showModal = true;
+        },
+        DeleteContact(contact) {
+            //Create a confirmation window
+        },
 
     }
 }
