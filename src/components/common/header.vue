@@ -1,11 +1,10 @@
 <template>
   <md-toolbar id="toolBar" class="md-accent" md-elevation="1">
-    <img src="../../assets/icons/Logo.png" class="md-title" style="flex: 1">
-    <md-button class="md-primary">Kontaktai</md-button>
-    <md-button class="md-primary">Įmonės</md-button>
-    <md-button class="md-primary">Struktūros</md-button>
-    <md-button class="md-primary">Būstinės</md-button>
-    <md-button class="md-primary">Paskyros</md-button>
+    <img src="../../assets/icons/Logo.png" class="md-title" style="flex: 1" @click="goToHomePage()">
+    <md-button class="md-primary" @click="goToContactPage()">Kontaktai</md-button>
+    <md-button class="md-primary" @click="goToCompanyPage()">Įmonės</md-button>
+    <md-button class="md-primary" @click="goToStructurePage()">Struktūros</md-button>
+    <md-button class="md-primary" @click="goToAdminPage()">Paskyros</md-button>
 
     <div class="md-toolbar-section-end">
       <img class="icon md-toolbar-section-end" src="../../assets/icons/icons8-male-user-96.png">
@@ -16,12 +15,31 @@
 </template>
 
 <script>
+import router from "../../router/router"
 export default {
   data() {
     return {
 
     }
   },
+  methods: {
+    goToHomePage() {
+      router.push('/');
+    },
+    goToContactPage(){
+      router.push('/');
+    },
+    goToCompanyPage() {
+      router.push('/management/companies');
+    },
+    goToStructurePage() {
+      router.push('/management/structures');
+    },
+    goToAdminPage() {
+      //TODO: not implement
+      alert("Feature not implemented");
+    },
+  }
 }
 </script>
 

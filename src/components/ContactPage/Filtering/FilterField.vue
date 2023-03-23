@@ -1,33 +1,47 @@
 <template>
     <div id="container">
-        <md-autocomplete
-      v-model="selectedFilter"
-      :md-options="filters"
-      md-layout="box"
-      md-dense>
-      <label>Filter</label>
-    </md-autocomplete>
+        <div class="md-layout-item">
+            <md-field>
+                <md-select v-model="selectedOption" name="country" id="country" :placeholder="PlaceholderText(dataset.key)">
+                    <md-option v-for="data in dataset.value" :key="data.id" value="data">{{ data }}</md-option>
+                </md-select>
+            </md-field>
+        </div>
     </div>
 </template>
   
 <script>
 export default {
+    props: ['dataset'],
     data() {
         return {
-            //Get select option and bind them to it:
-            //Categories are static
-            selectedFilter: "",
-            filters: [
-                'Filter1',
-                'Filter2',
-                'Filter3',
-                'Filter4',
-            ],
+            selectedOption: null,
         }
     },
+    methods: {
+        PlaceholderText(value) {
+            let word = "";
+            switch (value) {
+                case 'company':
+                    word = "įmonę";
+                    break;
+                case 'division':
+                    word = "diviziją";
+                    break;
+                case 'departament':
+                    word = "departamentą";
+                    break;
+                case 'group':
+                    word = "grupę";
+                    break;
+                case 'office':
+                    word = "būstinę";
+                    break;
+            }
+            return `Pasirinkite ${word}`;
+        }
+    }
 }
 </script>
   
-<style scoped>
-
-</style>
+<style scoped></style>

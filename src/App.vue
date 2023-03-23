@@ -6,6 +6,7 @@
         <link
           href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap"
           rel="stylesheet">
+          <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       </head>
       <header-component></header-component>
     <router-view></router-view>
@@ -30,14 +31,7 @@ export default {
 
 <style lang="scss">
 
-@import "~vue-material/dist/theme/engine"; // Import the theme engine
 
-@include md-register-theme("default", (
-  primary: #1F3F77, // The primary color of your brand
-  accent: #0054A6 // The secondary color of your brand
-));
-
-@import "~vue-material/dist/theme/all"; // Apply the theme
 
 #app {
   font-family: 'Roboto', sans-serif;

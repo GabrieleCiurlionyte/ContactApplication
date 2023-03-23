@@ -16,7 +16,8 @@ npm run build
 
 ## To run pocketbase server
 ```bash
-./pocketbase server
+cd pocket_base
+./pocketbase serve
 ```
 
 ## Install vue router
@@ -35,6 +36,16 @@ npm i axios
 ## Install SASS
 ```bash
 npm install -D sass-loader node-sass
+```
+
+## Install dtenv package:
+```bash
+npm install dotenv --save-dev
+```
+
+## Install vuevalidate 
+```bash
+npm install @vuelidate/core @vuelidate/validators
 ```
 
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
