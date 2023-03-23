@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export const filterPlugin = {
-  companies: [],
 };
 
 filterPlugin.http = axios.create({
@@ -9,7 +8,6 @@ filterPlugin.http = axios.create({
 });
 
 filterPlugin.getCompanies = async function () {
-  if (filterPlugin.companies.length == 0) {
     try {
       const response = await this.http.get(`/companies/records`);
       let companies = response.data.items;
@@ -17,9 +15,6 @@ filterPlugin.getCompanies = async function () {
     } catch (error) {
       console.log(error);
     }
-  } else {
-    return filterPlugin.companies;
-  }
 };
 
 filterPlugin.getCompanyNames = async function () {

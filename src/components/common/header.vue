@@ -4,7 +4,6 @@
     <md-button class="md-primary">Kontaktai</md-button>
     <md-button class="md-primary">Įmonės</md-button>
     <md-button class="md-primary">Struktūros</md-button>
-    <md-button class="md-primary">Būstinės</md-button>
     <md-button class="md-primary">Paskyros</md-button>
 
     <div class="md-toolbar-section-end">
