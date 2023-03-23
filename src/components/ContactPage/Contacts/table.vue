@@ -49,7 +49,7 @@ export default {
         },
         onSelect(item) {
             this.selected = item;
-            router.push(`/detailedContactPage/${this.selected.id}`);
+            router.push(`/contacts/${this.selected.id}`);
         }
     }
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <md-dialog :md-active.sync="showModal" :md-click-outside-to-close = false>
+    <md-dialog :md-active.sync="showModal" :md-click-outside-to-close=false>
       <md-dialog-title>{{ WindowTitle }}</md-dialog-title>
 
       <form novalidate class="md-layout" @submit.prevent="validateUser">
@@ -13,8 +13,7 @@
                   <div class="md-layout-item md-small-size-100">
                     <md-field :class="getValidationClass('firstName')">
                       <label for="first-name">Vardas</label>
-                      <md-input name="first-name" id="first-name" v-model="form.firstName"
-                        :disabled="sending" />
+                      <md-input name="first-name" id="first-name" v-model="form.firstName" :disabled="sending" />
                       <span class="md-error" v-if="!v$.form.firstName.required">Vardas yra būtinas</span>
                       <span class="md-error" v-else-if="!v$.form.firstName.minlength">Įvestas netinkamas vardas</span>
                     </md-field>
@@ -61,15 +60,15 @@
               <div class="md-subheading">Įmonės detalės</div>
               <md-field>
                 <label for="company">Įmonė</label>
-                <md-select v-model="form.company" name="company" id="company">
-                  <md-option value="fight-club">Fight Club</md-option>
-                  <md-option value="godfather">Godfather</md-option>
+                <md-select v-model="form.company" name="company" id="company" @md-closed="companySelected">
+                  <md-option v-for="company in filter.companies" :key="company.id" :value="company.name">{{ company.name
+                  }}</md-option>
                 </md-select>
               </md-field>
 
               <md-field>
                 <label for="division">Divizija</label>
-                <md-select v-model="form.division" name="division" id="division">
+                <md-select v-model="form.division" name="division" id="division" :disabled="!filter.divisionsAvailable">
                   <md-option value="fight-club">Fight Club</md-option>
                   <md-option value="godfather">Godfather</md-option>
                 </md-select>
@@ -77,7 +76,7 @@
 
               <md-field>
                 <label for="departament">Departamentas</label>
-                <md-select v-model="form.departament" name="departament" id="departament">
+                <md-select v-model="form.department" name="departament" id="departament" :disabled="!filter.departentsAvailable">
                   <md-option value="fight-club">Fight Club</md-option>
                   <md-option value="godfather">Godfather</md-option>
                 </md-select>
@@ -85,7 +84,7 @@
 
               <md-field>
                 <label for="group">Grupė</label>
-                <md-select v-model="form.group" name="group" id="group">
+                <md-select v-model="form.group" name="group" id="group" :disabled="!filter.groupsAvailable">
                   <md-option value="fight-club">Fight Club</md-option>
                   <md-option value="godfather">Godfather</md-option>
                 </md-select>
@@ -134,12 +133,21 @@ export default {
       email: null,
       phone_number: null,
       position: null,
-      comapny: null,
+      company: null,
       office: null,
       division: null,
       department: null,
       group: null,
       photo: null,
+    },
+    filter: {
+      companies: null,
+      divisions: null,
+      divisionsAvailable: false,
+      departments: null,
+      departentsAvailable: false,
+      groups: null,
+      groupsAvailable: false,
     },
     modalInitCount: 0,
     userSaved: false,
@@ -183,24 +191,21 @@ export default {
         return 'Pridėti';
       }
     },
+  },
 
-  },
-  created() {
-      //Have axios database and check if get imones request already done in the database
-      //Get imones
-  },
-  //TODO: created lifecycle hook fills the fields:
-  beforeUpdate() {
+  async beforeUpdate() {
     console.log("Before update triggered");
+    console.log("Current init count:" + this.modalInitCount);
     if (this.selected != null && this.modalInitCount == 0) {
       console.log("Before update triggered modal init");
+      this.filter.companies = await this.$filterPlugin.getCompanies();
       this.modalInitCount++;
       this.form.firstName = this.selected.name,
         this.form.lastName = this.selected.surname,
         this.form.email = this.selected.email,
         this.form.phone_number = this.selected.phone_number,
         this.form.position = this.selected.position,
-        this.form.comapny = this.selected.company,
+        this.form.company = this.selected.company,
         this.form.office = this.selected.office,
         this.form.division = this.selected.division,
         this.form.department = this.selected.departament,
@@ -208,34 +213,33 @@ export default {
         //TODO: add photo uploading
         this.form.photo = null
     }
-    else if(!this.EditMode && this.modalInitCount == 0) {
-      console.log("Before update triggered modal init");
+    else if (!this.EditMode && this.modalInitCount == 0) {
       this.modalInitCount++;
       this.form.firstName = null;
-        this.form.lastName = null;
-        this.form.email = null;
-        this.form.phone_number = null;
-        this.form.position = null;
-        this.form.comapny = null;
-        this.form.office = null;
-        this.form.division = null;
-        this.form.department = null;
-        this.form.group = null;
-        //TODO: add photo uploading
-        this.form.photo = null
+      this.form.lastName = null;
+      this.form.email = null;
+      this.form.phone_number = null;
+      this.form.position = null;
+      this.form.company = null;
+      this.form.office = null;
+      this.form.division = null;
+      this.form.department = null;
+      this.form.group = null;
+      //TODO: add photo uploading
+      this.form.photo = null
     }
   },
 
   methods: {
     CloseModalWindow: function () {
-      this.$emit('CloseModalWindow');
       this.modalInitCount--;
+      this.$emit('CloseModalWindow');
     },
     HandlectionButton: function () {
       //TODO: handle the plugin requests of creation or editing
-
-      this.$emit('CloseModalWindow');
       this.modalInitCount--;
+      this.$emit('CloseModalWindow');
+      
     },
 
     getValidationClass(fieldName) {
@@ -248,7 +252,15 @@ export default {
       }
     },
 
+    companySelected() {
+      //Incorrect because updates always - no matter when
+      // alert("Company selected");
+      // this.filter.divisionsAvailable = true;
+    },
 
+
+
+    //Maybe delete need to figure out form reset 
     clearForm() {
       this.$v.$reset()
       this.form.firstName = null
@@ -296,9 +308,11 @@ export default {
   background-color: #0054A6;
   color: white;
 }
+
 .md-subheading {
   text-align: center;
 }
+
 #secondColumn {
   margin-left: 10%;
 }

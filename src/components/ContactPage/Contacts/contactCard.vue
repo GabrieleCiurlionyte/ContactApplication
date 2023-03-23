@@ -2,7 +2,7 @@
   <div class="contact">
     <md-card class="card">
 
-      <md-card-header id="header" @click="test">
+      <md-card-header id="header">
         <div @click="test">
           <md-avatar>
             <img src="../../../assets/icons/icons8-male-user-96_grey.png" alt="Avatar">
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     test() {
-      alert("Hey")
+      this.$emit("GoToDetailPage");
     },
     editButtonClicked() {
       this.$emit('EditContact');
