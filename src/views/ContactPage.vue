@@ -1,7 +1,10 @@
 <template>
     <div id="contactPage">
 
-        <modal-window :showModal="showModal" :EditMode="false"></modal-window>
+        <modal-window :showModal="showModal"
+        :EditMode="isEdit" 
+        :selected="selected"
+        @CloseModalWindow ="CloseModalWindow"></modal-window>
 
         <div id="UtilityBar">
             <h1>Konktaktų sist/ema</h1>
@@ -14,6 +17,10 @@
 
                 <md-button class="md-icon-button" @click="isTable = !isTable">
                     <img src="../assets/icons/icons8-table-96.png">
+                </md-button>
+
+                <md-button class="md-icon-button" @click="AddContact()">
+                    <img src="../assets/icons/icons8-plus-sign-64.png">
                 </md-button>
             </div>
 
@@ -54,7 +61,9 @@ export default {
             contactCount: 0,
             isFilter: false,
             isTable: false,
-            showModal : true,
+            isEdit: false,
+            showModal : false,
+            selected : null,
         }
     },
     async created() {
@@ -63,11 +72,20 @@ export default {
     },
     methods: {
         EditContact(contact) {
+            this.isEdit = true;
+            this.selected = contact;
             this.showModal = true;
         },
         DeleteContact(contact) {
             //Create a confirmation window
         },
+        AddContact() {
+            this.isEdit = false;
+            this.showModal = true;
+        },
+        CloseModalWindow(){
+            this.showModal = false;
+        }
 
     }
 }

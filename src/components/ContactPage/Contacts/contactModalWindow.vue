@@ -1,6 +1,6 @@
 <template>
   <div>
-    <md-dialog :md-active.sync="showModal">
+    <md-dialog :md-active.sync="showModal" :md-click-outside-to-close = false>
       <md-dialog-title>{{ WindowTitle }}</md-dialog-title>
 
       <form novalidate class="md-layout" @submit.prevent="validateUser">
@@ -23,8 +23,7 @@
                   <div class="md-layout-item md-small-size-100">
                     <md-field :class="getValidationClass('lastName')">
                       <label for="last-name">Pavarde</label>
-                      <md-input name="last-name" id="last-name" v-model="form.lastName"
-                        :disabled="sending" />
+                      <md-input name="last-name" id="last-name" v-model="form.lastName" :disabled="sending" />
                       <span class="md-error" v-if="!v$.form.lastName.required">Pavardė yra būtina</span>
                       <span class="md-error" v-else-if="!v$.form.lastName.minlength">Įvesta netinkama pavardė</span>
                     </md-field>
@@ -33,8 +32,7 @@
 
                 <md-field :class="getValidationClass('position')">
                   <label for="position">Pozicija</label>
-                  <md-input name="position" id="position" v-model="form.position"
-                    :disabled="sending" />
+                  <md-input name="position" id="position" v-model="form.position" :disabled="sending" />
                 </md-field>
 
                 <span class="md-subheading">Kontaktinė informacija</span>
@@ -56,36 +54,58 @@
                   <span class="md-error" v-if="!v$.form.email.required">Elektroninis paštas yra būtinas</span>
                   <span class="md-error" v-else-if="!v$.form.email.email">Įvestas netinkamas elektroninis paštas</span>
                 </md-field>
-
-                <md-field :class="getValidationClass('email')">
-                  <label for="email">El. paštas</label>
-                  <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email"
-                    :disabled="sending" />
-                  <span class="md-error" v-if="!v$.form.email.required">Elektroninis paštas yra būtinas</span>
-                  <span class="md-error" v-else-if="!v$.form.email.email">Įvestas netinkamas elektroninis paštas</span>
-                </md-field>
               </md-card-content>
 
             </div>
             <div id="secondColumn">
+              <div class="md-subheading">Įmonės</div>
+              <md-field>
+                <label for="company">Įmonė</label>
+                <md-select v-model="form.company" name="company" id="company">
+                  <md-option value="fight-club">Fight Club</md-option>
+                  <md-option value="godfather">Godfather</md-option>
+                </md-select>
+              </md-field>
 
+              <md-field>
+                <label for="division">Divizija</label>
+                <md-select v-model="form.division" name="division" id="division">
+                  <md-option value="fight-club">Fight Club</md-option>
+                  <md-option value="godfather">Godfather</md-option>
+                </md-select>
+              </md-field>
+
+              <md-field>
+                <label for="departament">Departamentas</label>
+                <md-select v-model="form.departament" name="departament" id="departament">
+                  <md-option value="fight-club">Fight Club</md-option>
+                  <md-option value="godfather">Godfather</md-option>
+                </md-select>
+              </md-field>
+
+              <md-field>
+                <label for="group">Grupė</label>
+                <md-select v-model="form.group" name="group" id="group">
+                  <md-option value="fight-club">Fight Club</md-option>
+                  <md-option value="godfather">Godfather</md-option>
+                </md-select>
+              </md-field>
+
+              <md-button id="photo_button">Įkelti nuotraką</md-button>
             </div>
           </div>
 
 
           <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
-          <md-card-actions>
-            <md-button type="submit" class="md-primary" :disabled="sending">Create user</md-button>
-          </md-card-actions>
         </md-card>
 
         <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
       </form>
 
       <md-dialog-actions>
-        <md-button class="md-primary" @click="showModal = false">Uždaryti</md-button>
-        <md-button class="md-primary" @click="showModal = false">{{ ActionTitle }}</md-button>
+        <md-button class="md-primary" @click="CloseModalWindow">Uždaryti</md-button>
+        <md-button class="md-primary" @click="HandlectionButton">{{ ActionTitle }}</md-button>
       </md-dialog-actions>
     </md-dialog>
   </div>
@@ -103,7 +123,7 @@ import {
 
 export default {
   name: 'DialogCustom',
-  props: ['showModal', 'EditMode'],
+  props: ['showModal', 'EditMode', 'selected'],
   setup() {
     return { v$: useVuelidate() }
   },
@@ -139,6 +159,7 @@ export default {
         required,
         email
       },
+      //TODO: addd more validations for each of the fields
       phone_number: {
 
       }
@@ -163,7 +184,50 @@ export default {
     },
 
   },
+  //TODO: created lifecycle hook fills the fields:
+  beforeUpdate() {
+    //Fill fields if not empty
+    console.log("Before update trigered");
+    if (this.selected != null) {
+      this.form.firstName = this.selected.name,
+        this.form.lastName = this.selected.surname,
+        this.form.email = this.selected.email,
+        this.form.phone_number = this.selected.phone_number,
+        this.form.position = this.selected.position,
+        this.form.comapny = this.selected.company,
+        this.form.office = this.selected.office,
+        this.form.division = this.selected.division,
+        this.form.department = this.selected.departament,
+        this.form.group = this.selected.group,
+        //TODO: fix
+        this.form.photo = null
+    }
+    else {
+      this.form.firstName = null,
+        this.form.lastName = null,
+        this.form.email = null,
+        this.form.phone_number = null,
+        this.form.position = null,
+        this.form.comapny = null,
+        this.form.office = null,
+        this.form.division = null,
+        this.form.department = null,
+        this.form.group = null,
+        //TODO: fix
+        this.form.photo = null
+    }
+  },
+
   methods: {
+    CloseModalWindow: function () {
+      this.$emit('CloseModalWindow');
+    },
+    HandlectionButton: function () {
+      //TODO: handle the plugin requests of creation or editing
+
+      this.$emit('CloseModalWindow');
+    },
+
     getValidationClass(fieldName) {
       const field = this.form[fieldName]
 
@@ -187,12 +251,14 @@ export default {
       this.sending = true
 
       // Instead of this timeout, here you can call your API
-      window.setTimeout(() => {
-        this.lastUser = `${this.form.firstName} ${this.form.lastName}`
-        this.userSaved = true
-        this.sending = false
-        this.clearForm()
-      }, 1500)
+
+      //Time out 
+      // window.setTimeout(() => {
+      //   this.lastUser = `${this.form.firstName} ${this.form.lastName}`
+      //   this.userSaved = true
+      //   this.sending = false
+      //   this.clearForm()
+      // }, 1500)
     },
     validateUser() {
       this.$v.$touch()
@@ -213,6 +279,11 @@ export default {
 
 #main-container {
   display: flex;
+}
+
+#photo_button {
+  background-color: #0054A6;
+  color: white;
 }
 </style>
 

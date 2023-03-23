@@ -1,8 +1,9 @@
 <template>
   <div class="contact">
-    <md-card class="card" >
-      <div @click="test">
-        <md-card-header id="header" @click="test">
+    <md-card class="card">
+
+      <md-card-header id="header" @click="test">
+        <div @click="test">
           <md-avatar>
             <img src="../../../assets/icons/icons8-male-user-96_grey.png" alt="Avatar">
           </md-avatar>
@@ -13,23 +14,25 @@
           <div class="md-subhead">
             <slot name="position">pozicija</slot>
           </div>
-        </md-card-header>
+        </div>
+      </md-card-header>
 
-        <md-card-content @click="test">
+      <md-card-content @click="test">
+        <div @click="test">
           Telefono nr: <slot name="phone">+00000000000</slot><br>
           El. paštas: <slot name="email">example@teltonika.lt</slot><br>
           Adresas: <slot name="address">Saltoniškių g. 2</slot>
-        </md-card-content>
+        </div>
+      </md-card-content>
 
-        <md-card-actions>
-          <md-button class="md-icon-button md-raised" @click="editButtonClicked()">
-            <img src="../../../assets/icons/icons8-pencil-drawing-96.png">
-          </md-button>
-          <md-button id="deleteButton" class="md-icon-button md-raised" @click="deleteButtonClicked()">
-            <img src="../../../assets/icons/icons8-delete-96.png">
-          </md-button>
-        </md-card-actions>
-      </div>
+      <md-card-actions>
+        <md-button class="md-icon-button md-raised" @click="editButtonClicked()">
+          <img src="../../../assets/icons/icons8-pencil-drawing-96.png">
+        </md-button>
+        <md-button id="deleteButton" class="md-icon-button md-raised" @click="deleteButtonClicked()">
+          <img src="../../../assets/icons/icons8-delete-96.png">
+        </md-button>
+      </md-card-actions>
     </md-card>
   </div>
 </template>
@@ -81,4 +84,5 @@ export default {
 
 .md-icon-button {
   background-color: #0054A6;
-}</style>
+}
+</style>
