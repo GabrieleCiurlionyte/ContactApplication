@@ -12,15 +12,19 @@ import axios from 'axios'
 //Custom plugins:
 import contactPlugin from './plugins/contactPlugin'
 import filterPlugin from './plugins/filterPlugin';
-
+import companiesPlugin from './plugins/companiesPlugin';
 
 Vue.prototype.$http = axios;
+
+//Creation of a bus
+export const bus = new Vue();
+
 
 Vue.use(VueMaterial);
 Vue.use(MdIcon);
 Vue.use(contactPlugin);
 Vue.use(filterPlugin);
-
+Vue.use(companiesPlugin);
 
 
 new Vue({

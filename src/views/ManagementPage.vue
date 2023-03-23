@@ -1,6 +1,8 @@
 <template>
     <div id="managementPage">
 
+        <company-modal-window :showModal="showModal&&isCompany"
+        @closeModalWindow="showModal = false"></company-modal-window>
         <div id="UtilityBar">
             <h1>{{ pageHeader }}</h1>
             <div id="FunctionalityBar">
@@ -22,13 +24,15 @@
   
   
 <script>
-import companiesTable from "../components/ManagementPage/CompaniesTable.vue"
-import structuresTable from "../components/ManagementPage/StructuresTable.vue"
-
+import companiesTable from "../components/ManagementPage/Company/CompaniesTable.vue"
+import structuresTable from "../components/ManagementPage/Structures/StructuresTable.vue"
+import CompanyModalWindow from "../components/ManagementPage/Company/CompanyModalWindow.vue";
+import { bus } from "../main"
 export default {
     name: 'management-page',
     components: {
         'companies-table' : companiesTable,
+        'company-modal-window' : CompanyModalWindow,
         'structures-table': structuresTable,
     },
     computed: {
@@ -48,9 +52,6 @@ export default {
                     return "Pridėti naują struktūrą"
             }
         },
-        recordCount() {
-            //TODO:
-        },
         isCompany() {
             switch (this.$route.params.type) {
                 case 'companies':
@@ -62,18 +63,19 @@ export default {
     },
     data() {
         return {
-
             showModal: false,
             selected: null,
         }
     },
-    async created() {
-        this.contacts = await this.$contactPlugin.getContacts(30, 1);
-        this.contactCount = await this.$contactPlugin.getContactCount();
+    created() {
+        bus.$on('showCompanyModalWindowEdit', () => {
+            this.showModal = true;
+        })    
     },
     methods: {
         EditRecord(record) {
             this.selected = record;
+            console.log("Editing this record");
             this.showModal = true;
         },
         DeleteRecord(recordID) {

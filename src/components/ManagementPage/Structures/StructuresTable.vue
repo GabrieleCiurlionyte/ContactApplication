@@ -1,5 +1,6 @@
 <template>
     <div>
+        <p>Iš viso rasta:</p>
       <md-table md-card>
         <md-table-toolbar>
           <h1 class="md-title">Users</h1>
