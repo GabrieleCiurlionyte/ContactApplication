@@ -13,7 +13,7 @@
                   <div class="md-layout-item md-small-size-100">
                     <md-field :class="getValidationClass('firstName')">
                       <label for="first-name">Vardas</label>
-                      <md-input name="first-name" id="first-name" autocomplete="given-name" v-model="form.firstName"
+                      <md-input name="first-name" id="first-name" v-model="form.firstName"
                         :disabled="sending" />
                       <span class="md-error" v-if="!v$.form.firstName.required">Vardas yra būtinas</span>
                       <span class="md-error" v-else-if="!v$.form.firstName.minlength">Įvestas netinkamas vardas</span>
@@ -58,7 +58,7 @@
 
             </div>
             <div id="secondColumn">
-              <div class="md-subheading">Įmonės</div>
+              <div class="md-subheading">Įmonės detalės</div>
               <md-field>
                 <label for="company">Įmonė</label>
                 <md-select v-model="form.company" name="company" id="company">
@@ -141,6 +141,7 @@ export default {
       group: null,
       photo: null,
     },
+    modalInitCount: 0,
     userSaved: false,
     sending: false,
     lastUser: null
@@ -184,11 +185,16 @@ export default {
     },
 
   },
+  created() {
+      //Have axios database and check if get imones request already done in the database
+      //Get imones
+  },
   //TODO: created lifecycle hook fills the fields:
   beforeUpdate() {
-    //Fill fields if not empty
-    console.log("Before update trigered");
-    if (this.selected != null) {
+    console.log("Before update triggered");
+    if (this.selected != null && this.modalInitCount == 0) {
+      console.log("Before update triggered modal init");
+      this.modalInitCount++;
       this.form.firstName = this.selected.name,
         this.form.lastName = this.selected.surname,
         this.form.email = this.selected.email,
@@ -199,21 +205,23 @@ export default {
         this.form.division = this.selected.division,
         this.form.department = this.selected.departament,
         this.form.group = this.selected.group,
-        //TODO: fix
+        //TODO: add photo uploading
         this.form.photo = null
     }
-    else {
-      this.form.firstName = null,
-        this.form.lastName = null,
-        this.form.email = null,
-        this.form.phone_number = null,
-        this.form.position = null,
-        this.form.comapny = null,
-        this.form.office = null,
-        this.form.division = null,
-        this.form.department = null,
-        this.form.group = null,
-        //TODO: fix
+    else if(!this.EditMode && this.modalInitCount == 0) {
+      console.log("Before update triggered modal init");
+      this.modalInitCount++;
+      this.form.firstName = null;
+        this.form.lastName = null;
+        this.form.email = null;
+        this.form.phone_number = null;
+        this.form.position = null;
+        this.form.comapny = null;
+        this.form.office = null;
+        this.form.division = null;
+        this.form.department = null;
+        this.form.group = null;
+        //TODO: add photo uploading
         this.form.photo = null
     }
   },
@@ -221,11 +229,13 @@ export default {
   methods: {
     CloseModalWindow: function () {
       this.$emit('CloseModalWindow');
+      this.modalInitCount--;
     },
     HandlectionButton: function () {
       //TODO: handle the plugin requests of creation or editing
 
       this.$emit('CloseModalWindow');
+      this.modalInitCount--;
     },
 
     getValidationClass(fieldName) {
@@ -275,6 +285,7 @@ export default {
 <style scoped>
 #formCard {
   box-shadow: none;
+  padding: 5px;
 }
 
 #main-container {
@@ -284,6 +295,12 @@ export default {
 #photo_button {
   background-color: #0054A6;
   color: white;
+}
+.md-subheading {
+  text-align: center;
+}
+#secondColumn {
+  margin-left: 10%;
 }
 </style>
 

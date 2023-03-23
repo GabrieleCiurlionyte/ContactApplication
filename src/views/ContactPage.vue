@@ -7,7 +7,7 @@
         @CloseModalWindow ="CloseModalWindow"></modal-window>
 
         <div id="UtilityBar">
-            <h1>Konktaktų sist/ema</h1>
+            <h1>Konktaktų sistema</h1>
 
             <div id="FunctionalityBar">
                 <search-box id="search"></search-box>
