@@ -1,12 +1,12 @@
 <template>
   <md-toolbar id="toolBar" class="md-accent" md-elevation="1">
     <img src="../../assets/icons/Logo.png" class="md-title" style="flex: 1" @click="goToHomePage()">
-    <md-button class="md-primary" @click="goToContactPage()">Kontaktai</md-button>
-    <md-button class="md-primary" @click="goToCompanyPage()">Įmonės</md-button>
-    <md-button class="md-primary" @click="goToStructurePage()">Struktūros</md-button>
-    <md-button class="md-primary" @click="goToAdminPage()">Paskyros</md-button>
+    <md-button class="md-primary" @click="goToContactPage()" v-if="this.$store.state.authenticationStore.isAuthenticated">Kontaktai</md-button>
+    <md-button class="md-primary" @click="goToCompanyPage()" v-if="this.$store.state.authenticationStore.isAuthenticated">Įmonės</md-button>
+    <md-button class="md-primary" @click="goToStructurePage()" v-if="this.$store.state.authenticationStore.isAuthenticated">Struktūros</md-button>
+    <md-button class="md-primary" @click="goToAdminPage()" v-if="this.$store.state.authenticationStore.isAuthenticated">Paskyros</md-button>
 
-    <div class="md-toolbar-section-end">
+    <div class="md-toolbar-section-end" v-if="this.$store.state.authenticationStore.isAuthenticated">
       <img class="icon md-toolbar-section-end" src="../../assets/icons/icons8-male-user-96.png">
         </div>
 
@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import router from "../../router/router"
 export default {
   data() {
     return {
@@ -24,16 +23,16 @@ export default {
   },
   methods: {
     goToHomePage() {
-      router.push('/');
+      this.$router.push('/');
     },
     goToContactPage(){
-      router.push('/');
+      this.$router.push('/');
     },
     goToCompanyPage() {
-      router.push('/management/companies');
+      this.$router.push('/management/companies');
     },
     goToStructurePage() {
-      router.push('/management/structures');
+      this.$router.push('/management/structures');
     },
     goToAdminPage() {
       //TODO: not implement

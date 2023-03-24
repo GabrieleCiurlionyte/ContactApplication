@@ -26,10 +26,13 @@
       </md-card-content>
 
       <md-card-actions>
-        <md-button class="md-icon-button md-raised" @click="editButtonClicked()">
+          <md-button id="blueButton" class="md-icon-button md-raised" @click="editButtonClicked()"
+          v-if="this.$store.state.authenticationStore.isAuthenticated">
           <img src="../../../assets/icons/icons8-pencil-drawing-96.png">
         </md-button>
-        <md-button id="deleteButton" class="md-icon-button md-raised" @click="deleteButtonClicked()">
+        
+        <md-button id="deleteButton" class="md-icon-button md-raised" @click="deleteButtonClicked()"
+        v-if="this.$store.state.authenticationStore.isAuthenticated">
           <img src="../../../assets/icons/icons8-delete-96.png">
         </md-button>
       </md-card-actions>
@@ -69,6 +72,10 @@ export default {
   max-width: 100%;
 }
 
+.blueButton {
+  background-color: #0054A6;
+}
+
 .contact {
   width: 250px;
   padding: 0.5%;
@@ -80,6 +87,10 @@ export default {
 
 #deleteButton {
   background-color: #A61A11;
+}
+
+#blueButton {
+  background-color: #0054A6;
 }
 
 .md-icon-button {

@@ -11,10 +11,11 @@ import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 import axios from 'axios'
 
-//Custom plugins:
+//Importing custom plugins:
 import contactPlugin from './plugins/contactPlugin'
 import filterPlugin from './plugins/filterPlugin';
 import companiesPlugin from './plugins/companiesPlugin';
+import authenticationPlugin from './plugins/authenticationPlugin'
 
 Vue.prototype.$http = axios;
 
@@ -24,9 +25,11 @@ export const bus = new Vue();
 Vue.use(Vuex)
 Vue.use(VueMaterial);
 Vue.use(MdIcon);
+//Using custom plugins 
 Vue.use(contactPlugin);
 Vue.use(filterPlugin);
 Vue.use(companiesPlugin);
+Vue.use(authenticationPlugin);
 
 
 new Vue({

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <md-dialog :md-active.sync="showModal" :md-click-outside-to-close=false>
+    <md-dialog :md-active.sync="showModal" :md-click-outside-to-close="false" :md-close-on-esc="false">
       <md-dialog-title>{{ WindowTitle }}</md-dialog-title>
 
       <form novalidate class="md-layout" @submit.prevent="validateUser">

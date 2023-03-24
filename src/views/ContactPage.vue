@@ -19,7 +19,8 @@
                     <img src="../assets/icons/icons8-table-96.png">
                 </md-button>
 
-                <md-button class="md-icon-button" @click="AddContact()">
+                <md-button class="md-icon-button" @click="AddContact()"
+                v-if="this.$store.state.authenticationStore.isAuthenticated">
                     <img src="../assets/icons/icons8-plus-sign-64.png">
                 </md-button>
             </div>

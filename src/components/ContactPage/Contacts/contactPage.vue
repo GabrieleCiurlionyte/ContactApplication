@@ -17,7 +17,7 @@
 <script>
 
 import contactCard from "./contactCard.vue"
-import router from "../../../router/router"
+
 export default {
   props: ['contacts'],
   components: {
@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     GoToDetailPage(id) {
-      router.push(`/contacts/${id}`);
+      this.$router.push(`/contacts/${id}`);
     },
     EditContact(contact) {
       this.$emit('EditContact', contact);
