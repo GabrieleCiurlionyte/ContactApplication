@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
+import Vuex from 'vuex'
 import router from './router/router'
 import VueMaterial from 'vue-material'
 import { MdIcon } from 'vue-material/dist/components';
+import {store} from "./store/index"
 
 //TODO: remove and enter only the elements needed
 import 'vue-material/dist/vue-material.min.css'
@@ -19,7 +21,7 @@ Vue.prototype.$http = axios;
 //Creation of a bus
 export const bus = new Vue();
 
-
+Vue.use(Vuex)
 Vue.use(VueMaterial);
 Vue.use(MdIcon);
 Vue.use(contactPlugin);
@@ -29,6 +31,7 @@ Vue.use(companiesPlugin);
 
 new Vue({
   el: '#app',
+  store,
   render: h => h(App),
   router: router,
 })

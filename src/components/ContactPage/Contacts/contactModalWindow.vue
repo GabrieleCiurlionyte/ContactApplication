@@ -117,7 +117,7 @@ import {
   email,
   minLength,
 } from '@vuelidate/validators'
-
+import {bus} from "../../../main"
 
 
 export default {
@@ -198,7 +198,7 @@ export default {
     console.log("Current init count:" + this.modalInitCount);
     bus.$on('clearContactForm', () => {
       console.log("Clearing form");
-      this.form = null;
+      this.clearForm();
     });
     if (this.selected != null && this.modalInitCount == 0) {
       console.log("Before update triggered modal init");
@@ -219,18 +219,7 @@ export default {
     }
     else if (!this.EditMode && this.modalInitCount == 0) {
       this.modalInitCount++;
-      this.form.firstName = null;
-      this.form.lastName = null;
-      this.form.email = null;
-      this.form.phone_number = null;
-      this.form.position = null;
-      this.form.company = null;
-      this.form.office = null;
-      this.form.division = null;
-      this.form.department = null;
-      this.form.group = null;
-      //TODO: add photo uploading
-      this.form.photo = null
+      this.clearForm();
     }
   },
 
@@ -256,6 +245,21 @@ export default {
       }
     },
 
+    clearForm() {
+      this.form.firstName = null;
+      this.form.lastName = null;
+      this.form.email = null;
+      this.form.phone_number = null;
+      this.form.position = null;
+      this.form.company = null;
+      this.form.office = null;
+      this.form.division = null;
+      this.form.department = null;
+      this.form.group = null;
+      //TODO: add photo uploading
+      this.form.photo = null
+    },
+
     companySelected() {
       //Incorrect because updates always - no matter when
       // alert("Company selected");
@@ -265,14 +269,14 @@ export default {
 
 
     //Maybe delete need to figure out form reset 
-    clearForm() {
-      this.$v.$reset()
-      this.form.firstName = null
-      this.form.lastName = null
-      this.form.age = null
-      this.form.gender = null
-      this.form.email = null
-    },
+    // clearForm() {
+    //   this.$v.$reset()
+    //   this.form.firstName = null
+    //   this.form.lastName = null
+    //   this.form.age = null
+    //   this.form.gender = null
+    //   this.form.email = null
+    // },
     saveUser() {
       this.sending = true
 

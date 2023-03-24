@@ -70,6 +70,7 @@ export default {
     async created() {
         this.contacts = await this.$contactPlugin.getContacts(30, 1);
         this.contactCount = await this.$contactPlugin.getContactCount();
+        console.log(this.$store.state.authenticationStore);
     },
     methods: {
         EditContact(contact) {

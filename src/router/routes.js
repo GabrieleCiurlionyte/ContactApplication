@@ -6,6 +6,6 @@ import managementPage from "../views/ManagementPage.vue"
 export default [
     {path:'/', component: contactPage},
     {path:'/contacts/:id', component: detailedContactPage},
-    {path:'/loginPage', component: loginPage},
+    {path:'/login', component: loginPage},
     {path:'/management/:type', component: managementPage},
 ] 
