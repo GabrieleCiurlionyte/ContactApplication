@@ -16,7 +16,7 @@ export default {
         },
         updateAuthenticationToken(state, token) {
             console.log("Authentication token updated from store: " + token);
-            state.token = "Bearer" +token;
+            state.token = "Bearer " +token;
         },
         updateHeaderState(state, boolean) {
             console.log("Updated header state from store: " + boolean);

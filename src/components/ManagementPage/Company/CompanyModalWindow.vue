@@ -1,13 +1,11 @@
 <template>
     <div id="window">
-        <md-dialog :md-active.sync="showModal" :md-click-outside-to-close="false" :md-close-on-esc="false"
-        class="dialog">
+        <md-dialog :md-active.sync="showModal" :md-click-outside-to-close="false" :md-close-on-esc="false" class="dialog">
             <md-dialog-title>{{ dialogName }}</md-dialog-title>
-            
+
             <md-field class="inputField">
                 <label>Įmonės pavadinimas</label>
-                <md-input v-model="companyName" placeholder="Įveskite įmonės pavadinimą..."
-                ></md-input>
+                <md-input v-model="companyName" placeholder="Įveskite įmonės pavadinimą..."></md-input>
             </md-field>
 
             <md-dialog-actions>
@@ -26,7 +24,7 @@ export default {
     data: () => ({
         isEdit: false,
         company: null,
-        companyName : "",
+        companyName: "",
     }),
     computed: {
         dialogName() {
@@ -57,16 +55,23 @@ export default {
             this.$emit('closeModalWindow');
         },
         async submitAction() {
-            if(this.isEdit) {
+            if (this.isEdit) {
                 //TODO: Send a modify request
                 console.log("Modify request");
             }
             else {
-                //TODO: Send a post request
                 console.log("Post request");
-                await this.$companiesPlugin.createCompany(this.companyName);
-                //TODO error handling
+                try {
+                    const response = await this.$companiesPlugin.createCompany(this.companyName);
+                    
+                }
+                catch (error) {
+                    //Show modal window that incorrect
+                    alert("Incorrect request");
+                }
             }
+
+            bus.$emit('refreshCompanies');
             this.$emit('closeModalWindow');
         }
     }
@@ -74,8 +79,8 @@ export default {
 </script>
   
 <style scoped>
-    .dialog {
-        padding : 8%;
-    }
+.dialog {
+    padding: 8%;
+}
 </style>
   
