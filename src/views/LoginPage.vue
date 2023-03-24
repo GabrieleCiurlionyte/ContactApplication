@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <md-dialog-alert :md-active.sync="showError" :md-content="ErrorText" md-confirm-text="Gerai!" />
         <md-card id="card">
             <div id="cardContent">
                 <md-card-header>
@@ -49,7 +50,25 @@ export default {
         return {
             emailAddress: "",
             password: "",
+            showError: false,
         }
+    },
+    computed: {
+        ErrorText() {
+            const tryAgain = "Bandykite dar kartą...";
+            if(this.emailAddress == "" && this.password == "") {
+                return "Tušti elektroninio pašto ir slaptažodžio laukai. " + tryAgain;
+            }
+            else if(this.emailAddress == "") {
+                return "Neįvestas el. pašto adresas. " + tryAgain;
+            }
+            else if(this.password == "") {
+                return "Neįvestas slaptažodis. " + tryAgain;
+            }
+            else {
+                return "Neteisingi prisijungimo duomenys. " + tryAgain;
+            }
+        },
     },
     methods: {
         goToHomepageWithNoAuth() {
@@ -74,8 +93,7 @@ export default {
             }
             else {
                 console.log("Unsuccessful login");
-                //Show dialog
-
+                this.showError = true;
             }
 
         },

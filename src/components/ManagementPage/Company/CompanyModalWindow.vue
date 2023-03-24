@@ -63,8 +63,9 @@ export default {
             }
             else {
                 //TODO: Send a post request
-                await this.$companiesPlugin.createCompany("Test2");
                 console.log("Post request");
+                await this.$companiesPlugin.createCompany(this.companyName);
+                //TODO error handling
             }
             this.$emit('closeModalWindow');
         }

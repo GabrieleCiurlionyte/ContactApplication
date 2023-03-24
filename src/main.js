@@ -3,6 +3,7 @@ import App from './App.vue'
 import Vuex from 'vuex'
 import router from './router/router'
 import VueMaterial from 'vue-material'
+import 'vue-material/dist/vue-material.min.css'
 import { MdIcon } from 'vue-material/dist/components';
 import {store} from "./store/index"
 
@@ -31,6 +32,19 @@ Vue.use(filterPlugin);
 Vue.use(companiesPlugin);
 Vue.use(authenticationPlugin);
 
+// Vue.material.theme.register('custom', {
+//   primary: {
+//     color: '#1F3F77',
+//     hue: 500
+//   },
+//   accent: {
+//     color: '#0054A6',
+//     hue: 700
+//   },
+//   warn: 'red'
+// })
+
+// Vue.material.theme.use('custom')
 
 new Vue({
   el: '#app',

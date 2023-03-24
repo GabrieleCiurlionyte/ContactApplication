@@ -12,7 +12,7 @@
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-small-size-100">
                     <md-field :class="getValidationClass('firstName')">
-                      <label for="first-name">Vardas</label>
+                      <label for="first-name">Vardas*</label>
                       <md-input name="first-name" id="first-name" v-model="form.firstName" :disabled="sending" />
                       <span class="md-error" v-if="!v$.form.firstName.required">Vardas yra būtinas</span>
                       <span class="md-error" v-else-if="!v$.form.firstName.minlength">Įvestas netinkamas vardas</span>
@@ -21,7 +21,7 @@
 
                   <div class="md-layout-item md-small-size-100">
                     <md-field :class="getValidationClass('lastName')">
-                      <label for="last-name">Pavarde</label>
+                      <label for="last-name">Pavarde*</label>
                       <md-input name="last-name" id="last-name" v-model="form.lastName" :disabled="sending" />
                       <span class="md-error" v-if="!v$.form.lastName.required">Pavardė yra būtina</span>
                       <span class="md-error" v-else-if="!v$.form.lastName.minlength">Įvesta netinkama pavardė</span>
@@ -30,7 +30,7 @@
                 </div>
 
                 <md-field :class="getValidationClass('position')">
-                  <label for="position">Pozicija</label>
+                  <label for="position">Pozicija*</label>
                   <md-input name="position" id="position" v-model="form.position" :disabled="sending" />
                 </md-field>
 
@@ -38,7 +38,7 @@
 
                 <md-field :class="getValidationClass('email')">
                   <md-icon>email</md-icon>
-                  <label for="email">El. paštas</label>
+                  <label for="email">El. paštas*</label>
                   <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email"
                     :disabled="sending" />
                   <span class="md-error" v-if="!v$.form.email.required">Elektroninis paštas yra būtinas</span>
@@ -47,19 +47,20 @@
 
                 <md-field :class="getValidationClass('phone_number')">
                   <md-icon>phone</md-icon>
-                  <label for="phone_number">Telefono numeris</label>
-                  <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email"
+                  <label for="phone_number">Telefono numeris*</label>
+                  <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.phone"
                     :disabled="sending" />
                   <span class="md-error" v-if="!v$.form.email.required">Elektroninis paštas yra būtinas</span>
                   <span class="md-error" v-else-if="!v$.form.email.email">Įvestas netinkamas elektroninis paštas</span>
                 </md-field>
-              </md-card-content>
 
+                <div class="md-caption">* Privalomi laukai</div>
+              </md-card-content>
             </div>
             <div id="secondColumn">
               <div class="md-subheading">Įmonės detalės</div>
               <md-field>
-                <label for="company">Įmonė</label>
+                <label for="company">Įmonė*</label>
                 <md-select v-model="form.company" name="company" id="company" @md-closed="companySelected">
                   <md-option v-for="company in filter.companies" :key="company.id" :value="company.name">{{ company.name
                   }}</md-option>
@@ -76,7 +77,8 @@
 
               <md-field>
                 <label for="departament">Departamentas</label>
-                <md-select v-model="form.department" name="departament" id="departament" :disabled="!filter.departentsAvailable">
+                <md-select v-model="form.department" name="departament" id="departament"
+                  :disabled="!filter.departentsAvailable">
                   <md-option value="fight-club">Fight Club</md-option>
                   <md-option value="godfather">Godfather</md-option>
                 </md-select>
@@ -117,7 +119,7 @@ import {
   email,
   minLength,
 } from '@vuelidate/validators'
-import {bus} from "../../../main"
+import { bus } from "../../../main"
 
 
 export default {
@@ -228,11 +230,21 @@ export default {
       this.modalInitCount--;
       this.$emit('CloseModalWindow');
     },
-    HandlectionButton: function () {
+    HandlectionButton: async function () {
       //TODO: handle the plugin requests of creation or editing
-      this.modalInitCount--;
-      this.$emit('CloseModalWindow');
-      
+      if(this.EditMode) {
+        //TODO: try editing reuquest
+      }
+      else {
+        //Creation request
+        await this.$companiesPlugin.createCompany();
+      }
+
+      //Close modal window only if successful
+
+      // this.modalInitCount--;
+      // this.$emit('CloseModalWindow');
+
     },
 
     getValidationClass(fieldName) {
@@ -262,8 +274,8 @@ export default {
 
     companySelected() {
       //Incorrect because updates always - no matter when
-      // alert("Company selected");
-      // this.filter.divisionsAvailable = true;
+      alert("Company selected");
+      this.filter.divisionsAvailable = true;
     },
 
 
@@ -307,6 +319,11 @@ export default {
   box-shadow: none;
   padding: 5px;
 }
+
+.md-caption {
+  margin-left: 5%;
+}
+
 
 #main-container {
   display: flex;

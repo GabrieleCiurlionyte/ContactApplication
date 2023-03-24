@@ -23,10 +23,10 @@ export default {
   },
   methods: {
     goToHomePage() {
-      this.$router.push('/');
+      this.$router.push('/contacts');
     },
     goToContactPage(){
-      this.$router.push('/');
+      this.$router.push('/contacts');
     },
     goToCompanyPage() {
       this.$router.push('/management/companies');
