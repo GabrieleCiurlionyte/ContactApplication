@@ -44,6 +44,7 @@ import searchBox from "../components/ContactPage/searchBox.vue"
 import filterBar from "../components/ContactPage/Filtering/FilteriBar.vue"
 import contactTable from "../components/ContactPage/Contacts/table.vue"
 import modalWindow from "../components/ContactPage/Contacts/contactModalWindow.vue"
+import {bus} from "../main";
 
 export default {
     name: 'app',
@@ -81,6 +82,8 @@ export default {
         },
         AddContact() {
             this.isEdit = false;
+            bus.$emit('clearContactForm');
+            console.log("Emmited clearContact form when adding new contact");
             this.showModal = true;
         },
         CloseModalWindow(){

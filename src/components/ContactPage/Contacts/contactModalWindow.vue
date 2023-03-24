@@ -196,6 +196,10 @@ export default {
   async beforeUpdate() {
     console.log("Before update triggered");
     console.log("Current init count:" + this.modalInitCount);
+    bus.$on('clearContactForm', () => {
+      console.log("Clearing form");
+      this.form = null;
+    });
     if (this.selected != null && this.modalInitCount == 0) {
       console.log("Before update triggered modal init");
       this.filter.companies = await this.$filterPlugin.getCompanies();
