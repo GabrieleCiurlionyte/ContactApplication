@@ -11,11 +11,9 @@
                 </md-button>
                 <div class="md-subheading" id="buttonText"> {{ buttonText }}</div>
             </div>
-
             <br>
             
-        </div>
-        
+        </div>      
         <companies-table v-if="isCompany" class="table"></companies-table>
         <structures-table v-if="!isCompany" class="table"></structures-table>
 
@@ -57,7 +55,7 @@ export default {
                 case 'companies':
                     return true;
                 case 'structures':
-                    return "false"
+                    return false;
             }
         }
     },
@@ -65,6 +63,7 @@ export default {
         return {
             showModal: false,
             selected: null,
+            structures: null,
         }
     },
     created() {
@@ -86,8 +85,7 @@ export default {
         },
         CloseModalWindow() {
             this.showModal = false;
-        }
-
+        },
     }
 }
 </script>

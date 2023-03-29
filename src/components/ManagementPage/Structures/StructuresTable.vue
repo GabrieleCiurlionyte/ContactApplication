@@ -1,48 +1,45 @@
 <template>
-    <div>
-        <p>Iš viso rasta:</p>
-      <md-table md-card>
-        <md-table-toolbar>
-          <h1 class="md-title">Users</h1>
-        </md-table-toolbar>
+  <div>
+    <p>Iš viso rasta: {{ structures.length }}</p>
+    <md-table md-card>
+      <md-table-row>
+        <md-table-head>Pavadinimas</md-table-head>
+        <md-table-head>Tipas</md-table-head>
+        <md-table-head>Veiksmas</md-table-head>
+      </md-table-row>
+      <md-table-row v-for="structure in structures" :key="structure.id">
+        <md-table-cell md-numeric>{{ structure.name }}</md-table-cell>
+        <md-table-cell>{{  structure.collectionName }}</md-table-cell>
+        <md-table-cell> <md-button class="modifyButton" @click="OnModifyClick()">Redaguoti</md-button></md-table-cell>
+        <md-table-cell><md-button class="deleteButton" @click="DeleteCompany()">Ištrinti</md-button></md-table-cell>
+      </md-table-row>
+    </md-table>
+  </div>
+</template>
   
-        <md-table-row>
-          <md-table-head md-numeric>ID</md-table-head>
-          <md-table-head>Name</md-table-head>
-          <md-table-head>Email</md-table-head>
-          <md-table-head>Gender</md-table-head>
-          <md-table-head>Job Title</md-table-head>
-        </md-table-row>
-  
-        <md-table-row>
-          <md-table-cell md-numeric>1</md-table-cell>
-          <md-table-cell>Shawna Dubbin</md-table-cell>
-          <md-table-cell>sdubbin0@geocities.com</md-table-cell>
-          <md-table-cell>Male</md-table-cell>
-          <md-table-cell>Assistant Media Planner</md-table-cell>
-        </md-table-row>
-  
-        <md-table-row>
-          <md-table-cell md-numeric>2</md-table-cell>
-          <md-table-cell>Odette Demageard</md-table-cell>
-          <md-table-cell>odemageard1@spotify.com</md-table-cell>
-          <md-table-cell>Female</md-table-cell>
-          <md-table-cell>Account Coordinator</md-table-cell>
-        </md-table-row>
-  
-        <md-table-row>
-          <md-table-cell md-numeric>3</md-table-cell>
-          <md-table-cell>Vera Taleworth</md-table-cell>
-          <md-table-cell>vtaleworth2@google.ca</md-table-cell>
-          <md-table-cell>Male</md-table-cell>
-          <md-table-cell>Community Outreach Specialist</md-table-cell>
-        </md-table-row>
-      </md-table>
-    </div>
-  </template>
-  
-  <script>
-    export default {
-      name: 'TableCard'
-    }
-  </script>
+<script>
+export default {
+  name: 'TableCard',
+  data() {
+        return {
+            structures: null,
+        }
+    },
+  async created() {
+    this.structures = await this.$structuresPlugin.getStructures();
+  }
+}
+</script>
+
+<style scoped>
+.modifyButton {
+    background-color: #0054A6;
+    color: white;
+
+}
+.deleteButton {
+    background-color: #A61A11;
+    color: white;
+}
+
+</style>

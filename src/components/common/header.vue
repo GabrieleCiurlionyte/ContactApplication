@@ -32,6 +32,7 @@ export default {
       this.$router.push('/management/companies');
     },
     goToStructurePage() {
+      this.$store.commit('managementStore/updateIsStructures', true);
       this.$router.push('/management/structures');
     },
     goToAdminPage() {

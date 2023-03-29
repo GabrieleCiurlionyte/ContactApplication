@@ -17,6 +17,7 @@ import contactPlugin from './plugins/contactPlugin'
 import filterPlugin from './plugins/filterPlugin';
 import companiesPlugin from './plugins/companiesPlugin';
 import authenticationPlugin from './plugins/authenticationPlugin'
+import structuresPlugin from './plugins/structuresPlugin'
 
 Vue.prototype.$http = axios;
 
@@ -31,6 +32,7 @@ Vue.use(contactPlugin);
 Vue.use(filterPlugin);
 Vue.use(companiesPlugin);
 Vue.use(authenticationPlugin);
+Vue.use(structuresPlugin);
 
 // Vue.material.theme.register('custom', {
 //   primary: {
