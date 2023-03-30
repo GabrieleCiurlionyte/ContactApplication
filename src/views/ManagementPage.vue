@@ -1,8 +1,7 @@
 <template>
     <div id="managementPage">
 
-        <company-modal-window :showModal="showModal&&isCompany"
-        @closeModalWindow="showModal = false"></company-modal-window>
+        
         <div id="UtilityBar">
             <h1>{{ pageHeader }}</h1>
             <div id="FunctionalityBar">
@@ -82,6 +81,10 @@ export default {
         },
         AddRecord() {
             this.showModal = true;
+            if(!this.isCompany) {
+                bus.$emit('ShowStructureModalWindow', true);
+                bus.$emit('InitializeStructreCreation');
+            }
         },
         CloseModalWindow() {
             this.showModal = false;

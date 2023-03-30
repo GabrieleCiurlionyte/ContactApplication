@@ -5,7 +5,7 @@
 
             <md-field class="inputField">
                 <label>Įmonės pavadinimas</label>
-                <md-input v-model="companyName" placeholder="Įveskite įmonės pavadinimą..."></md-input>
+                <md-input v-model="companyName" :placeholder="placeholderText"></md-input>
             </md-field>
 
             <md-dialog-actions>
@@ -20,7 +20,7 @@
 import { bus } from "../../../main"
 export default {
     name: 'CompanyModal',
-    props: ['showModal'],
+    props: ['showModal', 'company'],
     data: () => ({
         isEdit: false,
         company: null,
@@ -41,6 +41,14 @@ export default {
             }
             else {
                 return "Pridėti";
+            }
+        },
+        placeholderText() {
+            if (this.isEdit) {
+                return this.company;
+            }
+            else {
+                return "";
             }
         }
     },
@@ -70,7 +78,6 @@ export default {
                     alert("Incorrect request");
                 }
             }
-
             bus.$emit('refreshCompanies');
             this.$emit('closeModalWindow');
         }

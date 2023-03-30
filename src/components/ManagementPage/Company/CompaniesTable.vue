@@ -2,10 +2,14 @@
     <div>
         <p>Iš viso rasta:</p>
 
+        <company-modal-window :showModal="showModal"
+        @closeModalWindow="showModal = false"
+        :company="selected.name"></company-modal-window>
+
         <md-dialog-confirm :md-active.sync="isDeletionWindowActive" md-title="Ar tikrai norite ištrinti?"
             :md-content="`Norite ištrinti įrašą pavadinimu: ` + selected.name" md-confirm-text="Taip"
-            md-cancel-text="Ne" @md-cancel="onDeleteCancel" @md-confirm="onDeleteConfirm" />
-
+            md-cancel-text="Ne" @md-cancel="onDeleteCancel" @md-confirm="onDeleteConfirm"/>
+            {{ selected.name }}
         <div>
             <md-table v-model="companies" md-card @md-selected="onSelect">
                 <md-table-row v-model="companies" md-card @md-selected="onSelect">
@@ -22,6 +26,7 @@
                 </md-table-row>
             </md-table>
         </div>
+        
     </div>
 </template>
   
@@ -54,9 +59,7 @@ export default {
     },
     methods: {
         onSelect(item) {
-            if(item != null) {
-                this.selected = item            
-            }
+                this.selected = item;       
         },
         OnModifyClick() {
             bus.$emit('showCompanyModalWindowEdit', 'selected');
