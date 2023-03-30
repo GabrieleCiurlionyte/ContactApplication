@@ -27,6 +27,7 @@ filterPlugin.getCompanyNames = async function () {
   }
 };
 
+//DIVISION METHODS
 filterPlugin.getDivisionNames = async function () {
   try {
     const response = await this.http.get(`/divisions/records`);
@@ -47,12 +48,32 @@ filterPlugin.getDivisions = async function () {
   }
 };
 
-//TODO: implement
-filterPlugin.getFilteredDepartaments = async function(division) {
+filterPlugin.getDivisionsFiltered = async function(officeID) {
   try {
-    const response = await this.http.get(`/divisions/records`);
-    let divisions = response.data.items;
+    const response = await this.http.get(`/offices/records/${officeID}?expand=offices_divisions(office_id).division_id`);
+    let divisions = [];
+    response.data.expand["offices_divisions(office_id)"].forEach(
+      relationship => {
+        divisions.push(relationship.expand.division_id);
+      }
+    );
     return divisions;
+  } catch (error) {
+    console.log(error);
+  }
+},
+
+filterPlugin.getFilteredDepartaments = async function(divisionID) {
+  try {
+    const response = await this.http.get(`/divisions/records/${divisionID}?expand=divisions_departments(division_id).department_id`);
+    let departaments = [];
+    response.data.expand["divisions_departments(division_id)"].forEach(
+      relationship => {
+        console.log(relationship.expand.department_id)
+        departaments.push(relationship.expand.department_id);
+      }
+    );
+    return departaments;
   } catch (error) {
     console.log(error);
   }
@@ -78,7 +99,8 @@ filterPlugin.getDepartaments = async function () {
   }
 };
 
-filterPlugin.getGroupNames = async function () {
+//GROUP METHODS
+filterPlugin.getGroupNames = async function (departmentID) {
   try {
     const response = await this.http.get(`/groups/records`);
     let groups = response.data.items;
@@ -88,8 +110,30 @@ filterPlugin.getGroupNames = async function () {
   }
 };
 
+filterPlugin.getFilteredGroups = async function(departmentID) {
+  try {
+    const response = await this.http.get(`/departments/records?expand=departments_groups(department_id).group_id`);
+    let departments = response.data.items;
+    //Find department with matchingID:
+    console.log(departments);
+    let foundDepartment = departments.filter(department => department.id == departmentID)[0];
+    console.log("Found department");
+    console.log(foundDepartment);
+    let groups = [];
+    foundDepartment.expand["departments_groups(department_id)"].forEach(
+      relationship => {
+        console.log(relationship.expand.group_id)
+        groups.push(relationship.expand.group_id);
+      }
+    );
+    return groups
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-//OFICE PLUGINS
+
+//OFFICE METHODS
 filterPlugin.getOfficeNames = async function () {
   try {
     const response = await this.http.get(`/offices/records`);
@@ -110,12 +154,10 @@ filterPlugin.getOffices = async function () {
   }
 };
 
-//TODO: test
-filterPlugin.getOfficesFiltered = async function(companyName) {
+
+filterPlugin.getOfficesFiltered = async function(companyID) {
   try {
-    const companies = await filterPlugin.getCompanies();
-    const matchedCompany = companies.filter(company => company.name == companyName);
-    const response = await this.http.get(`/companies/records/${matchedCompany[0].id}?expand=companies_offices(company_id).office_id`);
+    const response = await this.http.get(`/companies/records/${companyID}?expand=companies_offices(company_id).office_id`);
     console.log(response);
     let offices = [];
     response.data.expand["companies_offices(company_id)"].forEach(

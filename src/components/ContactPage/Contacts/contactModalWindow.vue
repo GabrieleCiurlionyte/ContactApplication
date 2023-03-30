@@ -63,7 +63,7 @@
               <md-field>
                 <label for="company">Įmonė*</label>
                 <md-select v-model="form.company" name="company" id="company" @md-closed="companySelected">
-                  <md-option v-for="company in filter.companies" :key="company.id" :value="company.name">{{ company.name
+                  <md-option v-for="company in filter.companies" :key="company.id" :value="company.id">{{ company.name
                   }}</md-option>
                 </md-select>
               </md-field>
@@ -79,7 +79,7 @@
                 <label for="division">Divizija</label>
                 <md-select v-model="form.division" name="division" id="division" :disabled="!filter.divisionsAvailable"
                 @md-closed="divisionSelected">
-                  <md-option v-for="division in filter.divisions" :key="division.id" :value="division.name">{{ division.name }}</md-option>
+                  <md-option v-for="division in filter.divisions" :key="division.id" :value="division.id">{{ division.name }}</md-option>
                 </md-select>
               </md-field>
 
@@ -87,16 +87,14 @@
                 <label for="departament">Departamentas</label>
                 <md-select v-model="form.department" name="departament" id="departament"
                   :disabled="!filter.departentsAvailable" @md-closed="departamentSelected">
-                  <md-option value="fight-club">Fight Club</md-option>
-                  <md-option value="godfather">Godfather</md-option>
+                  <md-option v-for="department in filter.departments" :key="department.id" :value="department.id">{{ department.name }}</md-option>
                 </md-select>
               </md-field>
 
               <md-field>
                 <label for="group">Grupė</label>
                 <md-select v-model="form.group" name="group" id="group" :disabled="!filter.groupsAvailable">
-                  <md-option value="fight-club">Fight Club</md-option>
-                  <md-option value="godfather">Godfather</md-option>
+                  <md-option v-for="group in filter.groups" :key="group.id" :value="group.id">{{ group.name }}</md-option>
                 </md-select>
               </md-field>
 
@@ -296,23 +294,25 @@ export default {
 
     async officeSelected() {
       if(this.form.office != null) {
-        //TODO: fix by issuing a filtered response
-        this.filter.divisions = await this.$filterPlugin.getDivisions();
+        //TODO: finish
+        console.log(this.form.office);
+        this.filter.divisions = await this.$filterPlugin.getDivisionsFiltered(this.form.office);
         this.filter.divisionsAvailable = true;
       }
     },
 
     async divisionSelected() {
       if(this.form.division != null) {
-        alert("Division selected");
+        console.log(this.form.division);
       this.filter.departments = await this.$filterPlugin.getFilteredDepartaments(this.form.division);
       this.filter.departentsAvailable = true;
       }
     },
 
-    departamentSelected() {
+    async departamentSelected() {
       if(this.form.department != null) {
-        alert("departament selected");
+      console.log(this.form.department);
+      this.filter.groups = await this.$filterPlugin.getFilteredGroups(this.form.department);
       this.filter.groupsAvailable = true;
       }
     },
