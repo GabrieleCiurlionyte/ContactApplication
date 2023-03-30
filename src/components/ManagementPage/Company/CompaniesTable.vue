@@ -54,8 +54,9 @@ export default {
     },
     methods: {
         onSelect(item) {
-            console.log(item);
-            this.selected = item
+            if(item != null) {
+                this.selected = item            
+            }
         },
         OnModifyClick() {
             bus.$emit('showCompanyModalWindowEdit', 'selected');
@@ -66,10 +67,8 @@ export default {
             this.isDeletionWindowActive = true;
         },
         async onDeleteConfirm() {
-            this.isDeletionWindowActive = false;
-            let data = await this.$companiesPlugin.deleteCompany(this.selected.id);
-            console.log("Data got from the delete request");
-            console.log(data);
+            await this.$companiesPlugin.deleteCompany(this.selected.id);
+            this.companies = await this.$filterPlugin.getCompanies();
             this.isDeletionWindowActive = false;
         },
         onDeleteCancel() {

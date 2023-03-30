@@ -1,7 +1,8 @@
 import { store } from "../store/index";
-export const companiesPlugin = {};
 
-const url = "http://127.0.0.1:8090/api/collections/companies/";
+export const companiesPlugin = {};
+import axios from 'axios'
+const url = "http://127.0.0.1:8090/api/collections/companies";
 //TODO: remove the access token when testing is done
 const access_token =
   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2xsZWN0aW9uSWQiOiJfcGJfdXNlcnNfYXV0aF8iLCJleHAiOjE2ODA3ODg5NDEsImlkIjoidWx6YWlxa2U4eDB4ZGkxIiwidHlwZSI6ImF1dGhSZWNvcmQifQ.fDmAwEzkFLH_HooC1EkT6IV6G-w_Dd9ihlNYoNdXVXU";
@@ -44,19 +45,19 @@ companiesPlugin.deleteCompany = async function (companyID) {
     //"Authorization": `${token}`,
     Authorization: `${access_token}`,
   };
-  fetch(url + `/records/${companyID}`, {
-    method: "DELETE",
-    headers: headers,
-  })
-    .then((response) => response.json())
-    .then((data) => {
+  try {
+    await axios({
+      method: "delete",
+      url: url + `/records/${companyID}`,
+      headers: headers,
+    }).then((data) => {
       console.log(data);
       return data;
-    })
-    .catch((error) => {
-      console.error(error);
-      return error;
     });
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
 };
 
 export default {
