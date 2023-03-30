@@ -57,6 +57,16 @@ filterPlugin.getDepartamentNames = async function () {
   }
 };
 
+filterPlugin.getDepartaments = async function () {
+  try {
+    const response = await this.http.get(`/departments/records`);
+    let departaments = response.data.items;
+    return departaments;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 filterPlugin.getGroupNames = async function () {
   try {
     const response = await this.http.get(`/groups/records`);
