@@ -24,9 +24,9 @@
 
 
             <md-field id="drop-down">
-                <label for="Offices">Būstinės</label>
-                <md-select v-model="selectedOffices" name="office" id="offices" multiple>
-                    <md-option :value="office.name" v-for="office in allOffices" :key="office.id">{{  office.name }}</md-option>
+                <label for="Companies">Įmonės</label>
+                <md-select v-model="selectedCompanies" name="company" multiple>
+                    <md-option :value="company.name" v-for="company in allCompanies" :key="company.id">{{  company.name }}</md-option>
                 </md-select>
             </md-field>
         </div>
@@ -47,8 +47,8 @@ export default {
             city: null,
             country: null,
 
-            selectedOffices: [],
-            allOffices: [],
+            selectedCompanies: [],
+            allCompanies: [],
         }
     },
     computed: {
@@ -58,7 +58,7 @@ export default {
 
     },
     async created() {
-        this.allOffices = await this.$filterPlugin.getOffices();
+        this.allCompanies = await this.$filterPlugin.getCompanies();
     }
 }
 </script>
@@ -66,7 +66,7 @@ export default {
 <style scoped>
 .input-field {
     padding: 5%;
-    max-width: 50%;
+    max-width: 100%;
 }
 
 .container {
