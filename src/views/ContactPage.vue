@@ -19,7 +19,8 @@
                     <img src="../assets/icons/icons8-table-96.png">
                 </md-button>
 
-                <md-button class="md-icon-button" @click="AddContact()">
+                <md-button class="md-icon-button" @click="AddContact()"
+                v-if="this.$store.state.authenticationStore.isAuthenticated">
                     <img src="../assets/icons/icons8-plus-sign-64.png">
                 </md-button>
             </div>
@@ -44,6 +45,7 @@ import searchBox from "../components/ContactPage/searchBox.vue"
 import filterBar from "../components/ContactPage/Filtering/FilteriBar.vue"
 import contactTable from "../components/ContactPage/Contacts/table.vue"
 import modalWindow from "../components/ContactPage/Contacts/contactModalWindow.vue"
+import {bus} from "../main";
 
 export default {
     name: 'app',
@@ -69,6 +71,7 @@ export default {
     async created() {
         this.contacts = await this.$contactPlugin.getContacts(30, 1);
         this.contactCount = await this.$contactPlugin.getContactCount();
+        console.log(this.$store.state.authenticationStore);
     },
     methods: {
         EditContact(contact) {
@@ -81,6 +84,8 @@ export default {
         },
         AddContact() {
             this.isEdit = false;
+            bus.$emit('clearContactForm');
+            console.log("Emmited clearContact form when adding new contact");
             this.showModal = true;
         },
         CloseModalWindow(){

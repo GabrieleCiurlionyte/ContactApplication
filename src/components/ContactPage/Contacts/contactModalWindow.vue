@@ -1,6 +1,6 @@
 <template>
   <div>
-    <md-dialog :md-active.sync="showModal" :md-click-outside-to-close=false>
+    <md-dialog :md-active.sync="showModal" :md-click-outside-to-close="false" :md-close-on-esc="false">
       <md-dialog-title>{{ WindowTitle }}</md-dialog-title>
 
       <form novalidate class="md-layout" @submit.prevent="validateUser">
@@ -12,7 +12,7 @@
                 <div class="md-layout md-gutter">
                   <div class="md-layout-item md-small-size-100">
                     <md-field :class="getValidationClass('firstName')">
-                      <label for="first-name">Vardas</label>
+                      <label for="first-name">Vardas*</label>
                       <md-input name="first-name" id="first-name" v-model="form.firstName" :disabled="sending" />
                       <span class="md-error" v-if="!v$.form.firstName.required">Vardas yra būtinas</span>
                       <span class="md-error" v-else-if="!v$.form.firstName.minlength">Įvestas netinkamas vardas</span>
@@ -21,7 +21,7 @@
 
                   <div class="md-layout-item md-small-size-100">
                     <md-field :class="getValidationClass('lastName')">
-                      <label for="last-name">Pavarde</label>
+                      <label for="last-name">Pavarde*</label>
                       <md-input name="last-name" id="last-name" v-model="form.lastName" :disabled="sending" />
                       <span class="md-error" v-if="!v$.form.lastName.required">Pavardė yra būtina</span>
                       <span class="md-error" v-else-if="!v$.form.lastName.minlength">Įvesta netinkama pavardė</span>
@@ -30,7 +30,7 @@
                 </div>
 
                 <md-field :class="getValidationClass('position')">
-                  <label for="position">Pozicija</label>
+                  <label for="position">Pozicija*</label>
                   <md-input name="position" id="position" v-model="form.position" :disabled="sending" />
                 </md-field>
 
@@ -38,7 +38,7 @@
 
                 <md-field :class="getValidationClass('email')">
                   <md-icon>email</md-icon>
-                  <label for="email">El. paštas</label>
+                  <label for="email">El. paštas*</label>
                   <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email"
                     :disabled="sending" />
                   <span class="md-error" v-if="!v$.form.email.required">Elektroninis paštas yra būtinas</span>
@@ -47,19 +47,20 @@
 
                 <md-field :class="getValidationClass('phone_number')">
                   <md-icon>phone</md-icon>
-                  <label for="phone_number">Telefono numeris</label>
-                  <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email"
+                  <label for="phone_number">Telefono numeris*</label>
+                  <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.phone"
                     :disabled="sending" />
                   <span class="md-error" v-if="!v$.form.email.required">Elektroninis paštas yra būtinas</span>
                   <span class="md-error" v-else-if="!v$.form.email.email">Įvestas netinkamas elektroninis paštas</span>
                 </md-field>
-              </md-card-content>
 
+                <div class="md-caption">* Privalomi laukai</div>
+              </md-card-content>
             </div>
             <div id="secondColumn">
               <div class="md-subheading">Įmonės detalės</div>
               <md-field>
-                <label for="company">Įmonė</label>
+                <label for="company">Įmonė*</label>
                 <md-select v-model="form.company" name="company" id="company" @md-closed="companySelected">
                   <md-option v-for="company in filter.companies" :key="company.id" :value="company.name">{{ company.name
                   }}</md-option>
@@ -76,7 +77,8 @@
 
               <md-field>
                 <label for="departament">Departamentas</label>
-                <md-select v-model="form.department" name="departament" id="departament" :disabled="!filter.departentsAvailable">
+                <md-select v-model="form.department" name="departament" id="departament"
+                  :disabled="!filter.departentsAvailable">
                   <md-option value="fight-club">Fight Club</md-option>
                   <md-option value="godfather">Godfather</md-option>
                 </md-select>
@@ -117,7 +119,7 @@ import {
   email,
   minLength,
 } from '@vuelidate/validators'
-
+import { bus } from "../../../main"
 
 
 export default {
@@ -196,6 +198,10 @@ export default {
   async beforeUpdate() {
     console.log("Before update triggered");
     console.log("Current init count:" + this.modalInitCount);
+    bus.$on('clearContactForm', () => {
+      console.log("Clearing form");
+      this.clearForm();
+    });
     if (this.selected != null && this.modalInitCount == 0) {
       console.log("Before update triggered modal init");
       this.filter.companies = await this.$filterPlugin.getCompanies();
@@ -215,18 +221,7 @@ export default {
     }
     else if (!this.EditMode && this.modalInitCount == 0) {
       this.modalInitCount++;
-      this.form.firstName = null;
-      this.form.lastName = null;
-      this.form.email = null;
-      this.form.phone_number = null;
-      this.form.position = null;
-      this.form.company = null;
-      this.form.office = null;
-      this.form.division = null;
-      this.form.department = null;
-      this.form.group = null;
-      //TODO: add photo uploading
-      this.form.photo = null
+      this.clearForm();
     }
   },
 
@@ -235,11 +230,21 @@ export default {
       this.modalInitCount--;
       this.$emit('CloseModalWindow');
     },
-    HandlectionButton: function () {
+    HandlectionButton: async function () {
       //TODO: handle the plugin requests of creation or editing
-      this.modalInitCount--;
-      this.$emit('CloseModalWindow');
-      
+      if(this.EditMode) {
+        //TODO: try editing reuquest
+      }
+      else {
+        //Creation request
+        await this.$companiesPlugin.createCompany();
+      }
+
+      //Close modal window only if successful
+
+      // this.modalInitCount--;
+      // this.$emit('CloseModalWindow');
+
     },
 
     getValidationClass(fieldName) {
@@ -252,23 +257,38 @@ export default {
       }
     },
 
+    clearForm() {
+      this.form.firstName = null;
+      this.form.lastName = null;
+      this.form.email = null;
+      this.form.phone_number = null;
+      this.form.position = null;
+      this.form.company = null;
+      this.form.office = null;
+      this.form.division = null;
+      this.form.department = null;
+      this.form.group = null;
+      //TODO: add photo uploading
+      this.form.photo = null
+    },
+
     companySelected() {
       //Incorrect because updates always - no matter when
-      // alert("Company selected");
-      // this.filter.divisionsAvailable = true;
+      alert("Company selected");
+      this.filter.divisionsAvailable = true;
     },
 
 
 
     //Maybe delete need to figure out form reset 
-    clearForm() {
-      this.$v.$reset()
-      this.form.firstName = null
-      this.form.lastName = null
-      this.form.age = null
-      this.form.gender = null
-      this.form.email = null
-    },
+    // clearForm() {
+    //   this.$v.$reset()
+    //   this.form.firstName = null
+    //   this.form.lastName = null
+    //   this.form.age = null
+    //   this.form.gender = null
+    //   this.form.email = null
+    // },
     saveUser() {
       this.sending = true
 
@@ -299,6 +319,11 @@ export default {
   box-shadow: none;
   padding: 5px;
 }
+
+.md-caption {
+  margin-left: 5%;
+}
+
 
 #main-container {
   display: flex;

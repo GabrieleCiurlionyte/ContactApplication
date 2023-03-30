@@ -1,8 +1,7 @@
 <template>
     <div id="managementPage">
 
-        <company-modal-window :showModal="showModal&&isCompany"
-        @closeModalWindow="showModal = false"></company-modal-window>
+        
         <div id="UtilityBar">
             <h1>{{ pageHeader }}</h1>
             <div id="FunctionalityBar">
@@ -11,11 +10,9 @@
                 </md-button>
                 <div class="md-subheading" id="buttonText"> {{ buttonText }}</div>
             </div>
-
             <br>
             
-        </div>
-        
+        </div>      
         <companies-table v-if="isCompany" class="table"></companies-table>
         <structures-table v-if="!isCompany" class="table"></structures-table>
 
@@ -57,7 +54,7 @@ export default {
                 case 'companies':
                     return true;
                 case 'structures':
-                    return "false"
+                    return false;
             }
         }
     },
@@ -65,6 +62,7 @@ export default {
         return {
             showModal: false,
             selected: null,
+            structures: null,
         }
     },
     created() {
@@ -83,11 +81,14 @@ export default {
         },
         AddRecord() {
             this.showModal = true;
+            if(!this.isCompany) {
+                bus.$emit('ShowStructureModalWindow', true);
+                bus.$emit('InitializeStructreCreation');
+            }
         },
         CloseModalWindow() {
             this.showModal = false;
-        }
-
+        },
     }
 }
 </script>

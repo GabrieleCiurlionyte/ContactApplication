@@ -37,11 +37,31 @@ filterPlugin.getDivisionNames = async function () {
   }
 };
 
+filterPlugin.getDivisions = async function () {
+  try {
+    const response = await this.http.get(`/divisions/records`);
+    let divisions = response.data.items;
+    return divisions;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 filterPlugin.getDepartamentNames = async function () {
   try {
     const response = await this.http.get(`/departments/records`);
     let departaments = response.data.items;
     return departaments.map((departament) => departament.name);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+filterPlugin.getDepartaments = async function () {
+  try {
+    const response = await this.http.get(`/departments/records`);
+    let departaments = response.data.items;
+    return departaments;
   } catch (error) {
     console.log(error);
   }
@@ -66,6 +86,18 @@ filterPlugin.getOfficeNames = async function () {
     console.log(error);
   }
 };
+
+filterPlugin.getOffices = async function () {
+  try {
+    const response = await this.http.get(`/offices/records`);
+    let offices = response.data.items;
+    return offices;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
 
 export default {
   install(Vue) {

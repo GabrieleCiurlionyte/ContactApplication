@@ -8,7 +8,7 @@
           rel="stylesheet">
           <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       </head>
-      <header-component></header-component>
+      <header-component v-if="this.$store.state.authenticationStore.showHeader"></header-component>
     <router-view></router-view>
   </div>
 </template>

@@ -27,7 +27,6 @@
 
 <script>
 
-import router from "../../../router/router"
 export default {
     components: {
     },
@@ -49,7 +48,7 @@ export default {
         },
         onSelect(item) {
             this.selected = item;
-            router.push(`/contacts/${this.selected.id}`);
+            this.$router.push(`/contacts/${this.selected.id}`);
         }
     }
 }
