@@ -79,6 +79,10 @@ export default {
     },
     methods: {
         closeModalWindow: function () {
+        this.showDepartamentFormBool= false,
+        this.showGroupFormBool= false,
+        this.showDivisionFormBool= false,
+        this.showOfficeFormBool=false,
             this.$emit('closeModalWindow');
         },
         showOfficeForm() {
