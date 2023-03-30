@@ -67,6 +67,18 @@ filterPlugin.getOfficeNames = async function () {
   }
 };
 
+filterPlugin.getOffices = async function () {
+  try {
+    const response = await this.http.get(`/offices/records`);
+    let offices = response.data.items;
+    return offices;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
 export default {
   install(Vue) {
     Vue.prototype.$filterPlugin = filterPlugin;

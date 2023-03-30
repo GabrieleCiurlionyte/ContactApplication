@@ -30,6 +30,10 @@
                 </div>
             </template>
 
+            <office-form v-if="showOfficeFormBool"></office-form>
+            <group-form v-if="showGroupFormBool"></group-form>
+            <division-form v-if="showDivisionFormBool"></division-form>
+            <departament-form v-if="showDepartamentFormBool"></departament-form>
 
 
             <md-dialog-actions>
@@ -43,10 +47,22 @@
 </template>
   
 <script>
-import { bus } from "../../../main"
+import { bus } from "../../../main";
+import officeFormVue from './Forms/officeForm.vue';
+import groupFormVue from './Forms/groupForm.vue';
+import divisionFormVue from "./Forms/divisionForm.vue";
+import departamentFormVue from "./Forms/departamentForm.vue";
+
+
 export default {
     name: 'DialogCustom',
     props: ['showDialog'],
+    components: {
+        'office-form': officeFormVue,
+        'group-form' : groupFormVue,
+        'division-form': divisionFormVue,
+        'departament-form' : departamentFormVue,
+    },
     data: () => ({
         modalWindowMode : "",
         showInitial: false,
