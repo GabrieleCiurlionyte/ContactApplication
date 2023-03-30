@@ -2,14 +2,14 @@
     <div>
         <p>Iš viso rasta:</p>
 
-        <company-modal-window :showModal="showModal"
-        @closeModalWindow="showModal = false"
-        :company="selected.name"></company-modal-window>
+        <company-modal-window :showModal="showModal" @closeModalWindow="showModal = false"
+            :company="selected.name"></company-modal-window>
+
 
         <md-dialog-confirm :md-active.sync="isDeletionWindowActive" md-title="Ar tikrai norite ištrinti?"
-            :md-content="`Norite ištrinti įrašą pavadinimu: ` + selected.name" md-confirm-text="Taip"
-            md-cancel-text="Ne" @md-cancel="onDeleteCancel" @md-confirm="onDeleteConfirm"/>
-            {{ selected.name }}
+            :md-content="`Norite ištrinti įrašą pavadinimu: ` + selected.name" md-confirm-text="Taip" md-cancel-text="Ne"
+            @md-cancel="onDeleteCancel" @md-confirm="onDeleteConfirm" />
+        {{ selected.name }}
         <div>
             <md-table v-model="companies" md-card @md-selected="onSelect">
                 <md-table-row v-model="companies" md-card @md-selected="onSelect">
@@ -26,7 +26,7 @@
                 </md-table-row>
             </md-table>
         </div>
-        
+
     </div>
 </template>
   
@@ -59,10 +59,16 @@ export default {
     },
     methods: {
         onSelect(item) {
-                this.selected = item;       
+            this.selected = item;
         },
         OnModifyClick() {
-            bus.$emit('showCompanyModalWindowEdit', 'selected');
+            console.log("Sending bus with argument");
+            console.log(this.selected);
+            if (this.selected != null || this.selected.id != null) {
+
+                bus.$emit('showCompanyModalWindowEdit', this.selected);
+            }
+
         },
 
         //Deletion methods

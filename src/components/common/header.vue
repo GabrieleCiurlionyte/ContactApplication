@@ -1,17 +1,21 @@
 <template>
+  <div>
   <md-toolbar id="toolBar" class="md-accent" md-elevation="1">
     <img src="../../assets/icons/Logo.png" class="md-title" style="flex: 1" @click="goToHomePage()">
-    <md-button class="md-primary" @click="goToContactPage()" v-if="this.$store.state.authenticationStore.isAuthenticated">Kontaktai</md-button>
-    <md-button class="md-primary" @click="goToCompanyPage()" v-if="this.$store.state.authenticationStore.isAuthenticated">Įmonės</md-button>
-    <md-button class="md-primary" @click="goToStructurePage()" v-if="this.$store.state.authenticationStore.isAuthenticated">Struktūros</md-button>
-    <md-button class="md-primary" @click="goToAdminPage()" v-if="this.$store.state.authenticationStore.isAuthenticated">Paskyros</md-button>
+    <md-button class="md-primary" @click="goToContactPage()"
+      v-if="this.$store.state.authenticationStore.isAuthenticated">Kontaktai</md-button>
+    <md-button class="md-primary" @click="goToCompanyPage()"
+      v-if="this.$store.state.authenticationStore.isAuthenticated">Įmonės</md-button>
+    <md-button class="md-primary" @click="goToStructurePage()"
+      v-if="this.$store.state.authenticationStore.isAuthenticated">Struktūros</md-button>
+    <md-button class="md-primary" @click="goToAdminPage()"
+      v-if="this.$store.state.authenticationStore.isAuthenticated">Paskyros</md-button>
 
     <div class="md-toolbar-section-end" v-if="this.$store.state.authenticationStore.isAuthenticated">
       <img class="icon md-toolbar-section-end" src="../../assets/icons/icons8-male-user-96.png">
-        </div>
-
-   
+    </div>
   </md-toolbar>
+  </div>
 </template>
 
 <script>
@@ -25,7 +29,7 @@ export default {
     goToHomePage() {
       this.$router.push('/contacts');
     },
-    goToContactPage(){
+    goToContactPage() {
       this.$router.push('/contacts');
     },
     goToCompanyPage() {
@@ -44,6 +48,11 @@ export default {
 </script>
 
 <style scoped>
+#sign-out-field {
+  position: fixed;
+  margin-top: -1.5%;
+}
+
 #toolBar {
   background-color: #1F3F77;
   position: fixed;
@@ -67,4 +76,9 @@ img {
   color: white;
   font-weight: bold;
 }
+
+#SignOut {
+  color: black;
+}
+
 </style>

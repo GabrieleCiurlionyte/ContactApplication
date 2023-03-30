@@ -23,7 +23,7 @@ export default {
     props: ['showModal', 'company'],
     data: () => ({
         isEdit: false,
-        company: null,
+        selected: null,
         companyName: "",
     }),
     computed: {
@@ -53,9 +53,11 @@ export default {
         }
     },
     created() {
-        bus.$on('showCompanyModalWindowEdit', (company) => {
-            this.company = company;
+        bus.$on('showCompanyModalWindowEdit', (selected) => {
+            console.log("item received");
             this.isEdit = true;
+            this.selected = selected;
+            console.log(this.selected);
         })
     },
     methods: {

@@ -59,6 +59,7 @@
             </div>
             <div id="secondColumn">
               <div class="md-subheading">Įmonės detalės</div>
+
               <md-field>
                 <label for="company">Įmonė*</label>
                 <md-select v-model="form.company" name="company" id="company" @md-closed="companySelected">
@@ -68,17 +69,24 @@
               </md-field>
 
               <md-field>
+                <label for="group">Bustinė</label>
+                <md-select v-model="form.office" name="office" id="office" :disabled="!filter.officesAvailable" @md-closed="officeSelected">
+                  <md-option v-for="office in filter.offices" :key="office.id" :value="office.id" >{{ office.name }}</md-option>
+                </md-select>
+              </md-field>
+
+              <md-field>
                 <label for="division">Divizija</label>
-                <md-select v-model="form.division" name="division" id="division" :disabled="!filter.divisionsAvailable">
-                  <md-option value="fight-club">Fight Club</md-option>
-                  <md-option value="godfather">Godfather</md-option>
+                <md-select v-model="form.division" name="division" id="division" :disabled="!filter.divisionsAvailable"
+                @md-closed="divisionSelected">
+                  <md-option v-for="division in filter.divisions" :key="division.id" :value="division.name">{{ division.name }}</md-option>
                 </md-select>
               </md-field>
 
               <md-field>
                 <label for="departament">Departamentas</label>
                 <md-select v-model="form.department" name="departament" id="departament"
-                  :disabled="!filter.departentsAvailable">
+                  :disabled="!filter.departentsAvailable" @md-closed="departamentSelected">
                   <md-option value="fight-club">Fight Club</md-option>
                   <md-option value="godfather">Godfather</md-option>
                 </md-select>
@@ -144,6 +152,8 @@ export default {
     },
     filter: {
       companies: null,
+      offices: null,
+      officesAvailable: false,
       divisions: null,
       divisionsAvailable: false,
       departments: null,
@@ -156,6 +166,9 @@ export default {
     sending: false,
     lastUser: null
   }),
+  async created(){
+    this.filter.companies = await this.$filterPlugin.getCompanies();
+  },
   validations: {
     form: {
       firstName: {
@@ -272,10 +285,36 @@ export default {
       this.form.photo = null
     },
 
-    companySelected() {
-      //Incorrect because updates always - no matter when
-      alert("Company selected");
-      this.filter.divisionsAvailable = true;
+    async companySelected() {
+      if(this.form.company != null) {
+        console.log("Selected this company");
+        console.log(this.form.company);
+        this.filter.offices = await this.$filterPlugin.getOfficesFiltered(this.form.company);
+        this.filter.officesAvailable = true;
+      }
+    },
+
+    async officeSelected() {
+      if(this.form.office != null) {
+        //TODO: fix by issuing a filtered response
+        this.filter.divisions = await this.$filterPlugin.getDivisions();
+        this.filter.divisionsAvailable = true;
+      }
+    },
+
+    async divisionSelected() {
+      if(this.form.division != null) {
+        alert("Division selected");
+      this.filter.departments = await this.$filterPlugin.getFilteredDepartaments(this.form.division);
+      this.filter.departentsAvailable = true;
+      }
+    },
+
+    departamentSelected() {
+      if(this.form.department != null) {
+        alert("departament selected");
+      this.filter.groupsAvailable = true;
+      }
     },
 
 

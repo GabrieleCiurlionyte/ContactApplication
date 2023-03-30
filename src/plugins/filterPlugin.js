@@ -47,6 +47,17 @@ filterPlugin.getDivisions = async function () {
   }
 };
 
+//TODO: implement
+filterPlugin.getFilteredDepartaments = async function(division) {
+  try {
+    const response = await this.http.get(`/divisions/records`);
+    let divisions = response.data.items;
+    return divisions;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 filterPlugin.getDepartamentNames = async function () {
   try {
     const response = await this.http.get(`/departments/records`);
@@ -77,6 +88,8 @@ filterPlugin.getGroupNames = async function () {
   }
 };
 
+
+//OFICE PLUGINS
 filterPlugin.getOfficeNames = async function () {
   try {
     const response = await this.http.get(`/offices/records`);
@@ -96,6 +109,27 @@ filterPlugin.getOffices = async function () {
     console.log(error);
   }
 };
+
+//TODO: test
+filterPlugin.getOfficesFiltered = async function(companyName) {
+  try {
+    const companies = await filterPlugin.getCompanies();
+    const matchedCompany = companies.filter(company => company.name == companyName);
+    const response = await this.http.get(`/companies/records/${matchedCompany[0].id}?expand=companies_offices(company_id).office_id`);
+    console.log(response);
+    let offices = [];
+    response.data.expand["companies_offices(company_id)"].forEach(
+      relationship => {
+        console.log(relationship.expand.office_id)
+        offices.push(relationship.expand.office_id);
+      }
+    );
+    console.log(offices);    
+    return offices;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
 
