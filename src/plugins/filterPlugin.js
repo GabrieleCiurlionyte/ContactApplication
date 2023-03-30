@@ -37,6 +37,16 @@ filterPlugin.getDivisionNames = async function () {
   }
 };
 
+filterPlugin.getDivisions = async function () {
+  try {
+    const response = await this.http.get(`/divisions/records`);
+    let divisions = response.data.items;
+    return divisions;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 filterPlugin.getDepartamentNames = async function () {
   try {
     const response = await this.http.get(`/departments/records`);
