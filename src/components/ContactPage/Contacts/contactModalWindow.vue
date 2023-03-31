@@ -48,10 +48,9 @@
                 <md-field :class="getValidationClass('phone_number')">
                   <md-icon>phone</md-icon>
                   <label for="phone_number">Telefono numeris*</label>
-                  <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.phone"
-                    :disabled="sending" />
-                  <span class="md-error" v-if="!v$.form.email.required">Elektroninis paštas yra būtinas</span>
-                  <span class="md-error" v-else-if="!v$.form.email.email">Įvestas netinkamas elektroninis paštas</span>
+                  <md-input name="phone_number" id="phone_number" v-model="form.phone_number" :disabled="sending" />
+                  <span class="md-error" v-if="!v$.form.phone_number.required">Telefono numeris yra būtinas</span>
+                  <!-- <span class="md-error" v-else-if="!v$.form.email.email">Įvestas netinkamas telefono numeris</span> -->
                 </md-field>
 
                 <div class="md-caption">* Privalomi laukai</div>
@@ -69,30 +68,34 @@
               </md-field>
 
               <md-field>
-                <label for="group">Bustinė</label>
-                <md-select v-model="form.office" name="office" id="office" :disabled="!filter.officesAvailable" @md-closed="officeSelected">
-                  <md-option v-for="office in filter.offices" :key="office.id" :value="office.id" >{{ office.name }}</md-option>
+                <label for="group">Bustinė*</label>
+                <md-select v-model="form.office" name="office" id="office" :disabled="!filter.officesAvailable"
+                  @md-closed="officeSelected">
+                  <md-option v-for="office in filter.offices" :key="office.id" :value="office.id">{{ office.name
+                  }}</md-option>
                 </md-select>
               </md-field>
 
               <md-field>
-                <label for="division">Divizija</label>
+                <label for="division">Divizija*</label>
                 <md-select v-model="form.division" name="division" id="division" :disabled="!filter.divisionsAvailable"
-                @md-closed="divisionSelected">
-                  <md-option v-for="division in filter.divisions" :key="division.id" :value="division.id">{{ division.name }}</md-option>
+                  @md-closed="divisionSelected">
+                  <md-option v-for="division in filter.divisions" :key="division.id" :value="division.id">{{ division.name
+                  }}</md-option>
                 </md-select>
               </md-field>
 
               <md-field>
-                <label for="departament">Departamentas</label>
+                <label for="departament">Departamentas*</label>
                 <md-select v-model="form.department" name="departament" id="departament"
                   :disabled="!filter.departentsAvailable" @md-closed="departamentSelected">
-                  <md-option v-for="department in filter.departments" :key="department.id" :value="department.id">{{ department.name }}</md-option>
+                  <md-option v-for="department in filter.departments" :key="department.id" :value="department.id">{{
+                    department.name }}</md-option>
                 </md-select>
               </md-field>
 
               <md-field>
-                <label for="group">Grupė</label>
+                <label for="group">Grupė*</label>
                 <md-select v-model="form.group" name="group" id="group" :disabled="!filter.groupsAvailable">
                   <md-option v-for="group in filter.groups" :key="group.id" :value="group.id">{{ group.name }}</md-option>
                 </md-select>
@@ -112,7 +115,7 @@
 
       <md-dialog-actions>
         <md-button class="md-primary" @click="CloseModalWindow">Uždaryti</md-button>
-        <md-button class="md-primary" @click="HandlectionButton">{{ ActionTitle }}</md-button>
+        <md-button class="md-primary" @click="HandleButton">{{ ActionTitle }}</md-button>
       </md-dialog-actions>
     </md-dialog>
   </div>
@@ -126,14 +129,15 @@ import {
   minLength,
 } from '@vuelidate/validators'
 import { bus } from "../../../main"
-
-
+import formValidationMixin from "../../../mixins/formValidationMixin";
 export default {
   name: 'DialogCustom',
   props: ['showModal', 'EditMode', 'selected'],
+  mixins: [formValidationMixin],
   setup() {
     return { v$: useVuelidate() }
   },
+
   data: () => ({
     form: {
       firstName: null,
@@ -164,7 +168,7 @@ export default {
     sending: false,
     lastUser: null
   }),
-  async created(){
+  async created() {
     this.filter.companies = await this.$filterPlugin.getCompanies();
   },
   validations: {
@@ -241,22 +245,36 @@ export default {
       this.modalInitCount--;
       this.$emit('CloseModalWindow');
     },
-    HandlectionButton: async function () {
+    HandleButton: async function () {
       //TODO: handle the plugin requests of creation or editing
-      if(this.EditMode) {
+      if (this.EditMode) {
         //TODO: try editing reuquest
       }
       else {
         //Creation request
-        await this.$companiesPlugin.createCompany();
+        if (this.fieldsValid()) {
+          await this.$contactPlugin.createContact(
+            this.form.firstName,
+            this.form.lastName,
+            this.form.phone_number,
+            this.form.email,
+            this.form.position,
+            this.form.company,
+            this.form.office,
+            this.form.department,
+            this.form.division,
+            this.form.group);
+          this.clearForm();
+          this.CloseModalWindow();
+        }
+        else {
+          alert("Neteisingai užpildyta forma");
+        }
+
       }
-
-      //Close modal window only if successful
-
-      // this.modalInitCount--;
-      // this.$emit('CloseModalWindow');
-
     },
+
+
 
     getValidationClass(fieldName) {
       const field = this.form[fieldName]
@@ -284,50 +302,47 @@ export default {
     },
 
     async companySelected() {
-      if(this.form.company != null) {
-        console.log("Selected this company");
-        console.log(this.form.company);
-        this.filter.offices = await this.$filterPlugin.getOfficesFiltered(this.form.company);
-        this.filter.officesAvailable = true;
+      if (this.form.company != null) {
+        try {
+          this.filter.offices = await this.$filterPlugin.getOfficesFiltered(this.form.company);
+          if (this.filter.offices.length > 0 || this.filter.offices == null || this.filter.offices == undefined) {
+            this.filter.officesAvailable = true;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+
       }
     },
 
     async officeSelected() {
-      if(this.form.office != null) {
-        //TODO: finish
-        console.log(this.form.office);
+      if (this.form.office != null) {
         this.filter.divisions = await this.$filterPlugin.getDivisionsFiltered(this.form.office);
-        this.filter.divisionsAvailable = true;
+        if (this.filter.divisions.length > 0 || this.filter.divisions == null) {
+          this.filter.divisionsAvailable = true;
+        }
       }
     },
 
     async divisionSelected() {
-      if(this.form.division != null) {
-        console.log(this.form.division);
-      this.filter.departments = await this.$filterPlugin.getFilteredDepartaments(this.form.division);
-      this.filter.departentsAvailable = true;
+      if (this.form.division != null) {
+        this.filter.departments = await this.$filterPlugin.getFilteredDepartaments(this.form.division);
+        if (this.filter.departments.length > 0 && this.filter.departments == null) {
+          this.filter.departentsAvailable = true;
+        }
       }
     },
 
     async departamentSelected() {
-      if(this.form.department != null) {
-      console.log(this.form.department);
-      this.filter.groups = await this.$filterPlugin.getFilteredGroups(this.form.department);
-      this.filter.groupsAvailable = true;
+      if (this.form.department != null) {
+        console.log(this.form.department.length > 0 && this.form.department == null);
+        this.filter.groups = await this.$filterPlugin.getFilteredGroups(this.form.department);
+        if (this.filter.groups.length > 0) {
+          this.filter.groupsAvailable = true;
+        }
       }
     },
 
-
-
-    //Maybe delete need to figure out form reset 
-    // clearForm() {
-    //   this.$v.$reset()
-    //   this.form.firstName = null
-    //   this.form.lastName = null
-    //   this.form.age = null
-    //   this.form.gender = null
-    //   this.form.email = null
-    // },
     saveUser() {
       this.sending = true
 
