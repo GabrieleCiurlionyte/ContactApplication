@@ -6,6 +6,11 @@
         :selected="selected"
         @CloseModalWindow ="CloseModalWindow"></modal-window>
 
+        <delete-confirmation :selectedArticle="selected" :showConfirmationWindow="showConfirmationWindow"
+        @CancelDeleteConfirmation="CancelDeleteConfirmation()"
+        @ConfirmDeleteConfirmation="ConfirmDeletionConfirmation()"
+        v-if="showConfirmationWindow"></delete-confirmation>
+
         <div id="UtilityBar">
             <h1>Konktaktų sistema</h1>
 
@@ -45,6 +50,7 @@ import searchBox from "../components/ContactPage/searchBox.vue"
 import filterBar from "../components/ContactPage/Filtering/FilteriBar.vue"
 import contactTable from "../components/ContactPage/Contacts/table.vue"
 import modalWindow from "../components/ContactPage/Contacts/contactModalWindow.vue"
+import deleteConfirmation from "../components/ContactPage/Contacts/deleteConfirmation.vue"
 import {bus} from "../main";
 
 export default {
@@ -56,6 +62,7 @@ export default {
         'filter-bar': filterBar,
         'contact-table': contactTable,
         'modal-window' : modalWindow,
+        'delete-confirmation' : deleteConfirmation,
     },
     data() {
         return {
@@ -66,6 +73,7 @@ export default {
             isEdit: false,
             showModal : false,
             selected : null,
+            showConfirmationWindow : false,
         }
     },
     async created() {
@@ -77,11 +85,8 @@ export default {
         EditContact(contact) {
             this.isEdit = true;
             this.selected = contact;
-            bus.$emit('setUpForm', contact);
-            this.showModal = true;
-        },
-        DeleteContact(contact) {
-            //Create a confirmation window
+            bus.$emit('setUpForm', contact);        
+
         },
         AddContact() {
             this.isEdit = false;
@@ -91,7 +96,22 @@ export default {
         },
         CloseModalWindow(){
             this.showModal = false;
+        },
+        CancelDeleteConfirmation(){
+            this.showConfirmationWindow = false;
+        },
+        DeleteContact(contact) {
+            this.selected = contact;
+            this.showConfirmationWindow = true;
+        },
+        async ConfirmDeletionConfirmation() {
+            //send a deletion request via a plugin
+            await this.$contactPlugin.deleteContact(selected);
+            this.contacts = await this.$contactPlugin.getContacts(30,1);
+            this.showConfirmationWindow = false;
         }
+        
+
 
     }
 }

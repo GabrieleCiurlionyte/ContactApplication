@@ -121,6 +121,26 @@ contactPlugin.editContact = async function(id, name, surname,
           console.error(error);
           return error;
         });
+},
+
+contactPlugin.deleteContact = async function(contact){
+    let headers = {
+        "Content-Type": "application/json",
+        //"Authorization": `${token}`,
+        "Authorization": `${access_token}`,
+      };
+      fetch(url + `/collections/contacts/records/${contact.id}`, {
+        method: "PATCH",
+        headers: headers,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          return data;
+        })
+        .catch((error) => {
+          console.error(error);
+          return error;
+        });
 }
 
 export default {
