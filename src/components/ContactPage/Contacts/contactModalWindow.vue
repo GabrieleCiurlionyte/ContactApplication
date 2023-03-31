@@ -170,7 +170,10 @@ export default {
   }),
   async created() {
     this.filter.companies = await this.$filterPlugin.getCompanies();
-  },
+    bus.$on('setUpForm', (selected) => {
+      this.setUpForm(selected);})
+    },
+
   validations: {
     form: {
       firstName: {
@@ -187,8 +190,11 @@ export default {
       },
       //TODO: addd more validations for each of the fields
       phone_number: {
-
-      }
+        required,
+      },
+      position: {
+        required,
+      },
     }
   },
   computed: {
@@ -246,9 +252,27 @@ export default {
       this.$emit('CloseModalWindow');
     },
     HandleButton: async function () {
-      //TODO: handle the plugin requests of creation or editing
       if (this.EditMode) {
-        //TODO: try editing reuquest
+        if (this.fieldsValid()) {
+          await this.$contactPlugin.editContact(
+            this.selected.id,
+            this.form.firstName,
+            this.form.lastName,
+            this.form.phone_number,
+            this.form.email,
+            this.form.position,
+            this.form.company,
+            this.form.office,
+            this.form.department,
+            this.form.division,
+            this.form.group);
+          this.clearForm();
+          this.CloseModalWindow();
+          //Update the contact list
+        }
+        else {
+          alert("Neteisingai užpildyta forma");
+        }
       }
       else {
         //Creation request
@@ -297,6 +321,22 @@ export default {
       this.form.division = null;
       this.form.department = null;
       this.form.group = null;
+      //TODO: add photo uploading
+      this.form.photo = null
+    },
+
+    setUpForm(selected) {
+      console.log("Setting up the specific form")
+      this.form.firstName = selected.name;
+      this.form.lastName = selected.surname;
+      this.form.email = selected.email;
+      this.form.phone_number = selected.phone_number;
+      this.form.position = selected.position;
+      this.form.company = selected.company;
+      this.form.office = selected.office;
+      this.form.division = selected.division;
+      this.form.department = selected.departament;
+      this.form.group = selected.group;
       //TODO: add photo uploading
       this.form.photo = null
     },

@@ -77,6 +77,7 @@ export default {
         EditContact(contact) {
             this.isEdit = true;
             this.selected = contact;
+            bus.$emit('setUpForm', contact);
             this.showModal = true;
         },
         DeleteContact(contact) {

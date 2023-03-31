@@ -55,7 +55,6 @@ contactPlugin.getContactCount = async function() {
 
 contactPlugin.createContact = async function(name, surname,
     phone_number, email, position, company, office, department, division, group){
-        //TODO: implement
         let headers = {
             "Content-Type": "application/json",
             //"Authorization": `${token}`,
@@ -89,6 +88,40 @@ contactPlugin.createContact = async function(name, surname,
             });
     }
 
+contactPlugin.editContact = async function(id, name, surname,
+    phone_number, email, position, company, office, department, division, group){
+    let headers = {
+        "Content-Type": "application/json",
+        //"Authorization": `${token}`,
+        "Authorization": `${access_token}`,
+      };
+      let body = JSON.stringify({
+        name: name,
+        surname: surname,
+        phone_number: phone_number,
+        email: email,
+        position: position,
+        company: company,
+        office: office,
+        department: department,
+        division: division,
+        group: group,
+      });
+      fetch(url + `/collections/contacts/records/${id}`, {
+        method: "PATCH",
+        headers: headers,
+        body: body,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          return data;
+        })
+        .catch((error) => {
+          console.error(error);
+          return error;
+        });
+}
 
 export default {
     install(Vue) {
